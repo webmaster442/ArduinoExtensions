@@ -21,3 +21,7 @@ Tools tested with Arduino IDE 1.0.6
 ##Libraries
 	- TinyWireM & TinyWireS: Wire (I2C / TWI) library for the ATtiny85 (using USI)
 		http://playground.arduino.cc/Code/USIi2c
+		
+##Tools
+	- Termite: a simple RS232 terminal
+		http://www.compuphase.com/software_termite.htm
