@@ -1,5 +1,9 @@
+#if ARDUINO >= 100
+#include <Arduino.h>
+#else
 #include "WProgram.h" 
 #include <wiring.h>
+#endif
 
 #define BIT_READ(value, bit) (((value) >> (bit)) & 0x01)
 #define BIT_SET(value, bit) ((value) |= (1UL << (bit)))
@@ -129,14 +133,14 @@ SREG=saveSreg;                                             \
 #ifndef digitalWriteFast
 #define digitalWriteFast(P, V) \
 do {                       \
-if (__builtin_constant_p(P) && __builtin_constant_p(V))   __atomicWrite__((uint8_t*) digitalPinToPortReg(P),P,V) \
+if (__builtin_constant_p(P) && __builtin_constant_p(V))   __atomicWrite__((volatile uint8_t*) digitalPinToPortReg(P),P,V) \
 else  digitalWrite((P), (V));         \
 }while (0)
 #endif  //#ifndef digitalWriteFast2
 
 #if !defined(pinModeFast)
 #define pinModeFast(P, V) \
-do {if (__builtin_constant_p(P) && __builtin_constant_p(V)) __atomicWrite__((uint8_t*) digitalPinToDDRReg(P),P,V) \
+do {if (__builtin_constant_p(P) && __builtin_constant_p(V)) __atomicWrite__((volatile uint8_t*) digitalPinToDDRReg(P),P,V) \
 else pinMode((P), (V)); \
 } while (0)
 #endif
@@ -144,7 +148,7 @@ else pinMode((P), (V)); \
 
 #ifndef noAnalogWrite
 #define noAnalogWrite(P) \
-	do {if (__builtin_constant_p(P) )  __atomicWrite((uint8_t*) __digitalPinToTimer(P),P,0) \
+	do {if (__builtin_constant_p(P) )  __atomicWrite((volatile uint8_t*) __digitalPinToTimer(P),P,0) \
 		else turnOffPWM((P));   \
 } while (0)
 #endif		

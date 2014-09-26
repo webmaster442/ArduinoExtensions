@@ -31,7 +31,7 @@ Tools tested with Arduino IDE 1.0.6
 	https://github.com/yosemitebandit/PS2Keyboard
 	http://playground.arduino.cc/Main/PS2Keyboard
 
-* DigitalWriteFast - Interupt safe version
+* DigitalWriteFast - Interupt safe version with patch to work under arduino 1.0
 	https://code.google.com/p/digitalwritefast/
 
 * Time Library
