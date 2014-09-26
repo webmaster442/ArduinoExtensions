@@ -21,7 +21,25 @@ Tools tested with Arduino IDE 1.0.6
 ##Libraries
 	- TinyWireM & TinyWireS: Wire (I2C / TWI) library for the ATtiny85 (using USI)
 		http://playground.arduino.cc/Code/USIi2c
-		
+
+	- Debouncing library for Arduino or Wiring
+		https://github.com/thomasfredericks/Bounce-Arduino-Wiring/
+
+	- PS2Keyboard library (Leonardo compatible)
+		https://github.com/yosemitebandit/PS2Keyboard and http://playground.arduino.cc/Main/PS2Keyboard
+
+	- DigitalWriteFast - Interupt safe version
+		https://code.google.com/p/digitalwritefast/
+
+	- Time Library
+		http://www.pjrc.com/teensy/td_libs_Time.html
+
+	- DS1307RTC Library
+		http://www.pjrc.com/teensy/td_libs_DS1307RTC.html
+
+	- MAX7221 & MAX7219 library
+		http://playground.arduino.cc/Main/LedControl#Source
+
 ##Tools
 	- Termite: a simple RS232 terminal
 		http://www.compuphase.com/software_termite.htm
