@@ -43,6 +43,18 @@ Tools tested with Arduino IDE 1.0.6
 * MAX7221 & MAX7219 library
 	http://playground.arduino.cc/Main/LedControl#Source
 
+* NewPing Library
+	http://playground.arduino.cc/Code/NewPing
+
+* Adafruit MCP23017 I2c Port Expander library
+	https://github.com/adafruit/Adafruit-MCP23017-Arduino-Library
+
+* AVR OS
+	https://github.com/chrismoos/avr-os
+
+* OneWire Library
+	http://www.pjrc.com/teensy/td_libs_OneWire.html
+
 ##Tools
 * Termite: a simple RS232 terminal
 	http://www.compuphase.com/software_termite.htm
