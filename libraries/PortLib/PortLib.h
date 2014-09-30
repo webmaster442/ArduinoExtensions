@@ -13,6 +13,7 @@ class Port4
 		Port8(int p1, int p2, int p3, int p4, int PORTMODE);
 		void Write(byte Data);
 		byte Read();
+		void PortMode(int PORTMODE);
 };
 
 class Port8
@@ -24,6 +25,7 @@ class Port8
 		Port8(int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8, int PORTMODE);
 		void Write(byte Data);
 		byte Read();
+		void PortMode(int PORTMODE);
 };
 
 class Port16
@@ -35,6 +37,7 @@ class Port16
 		Port16(int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8, int p9, int p10, int p11, int p12, int p13, int p14, int p15, int p16, int PORTMODE);
 		void Write(unsigned int Data);
 		unsigned int Read();
+		void PortMode(int PORTMODE);
 };
 
 #endif
