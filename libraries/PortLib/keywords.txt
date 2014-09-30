@@ -1,0 +1,23 @@
+#######################################
+# Syntax Coloring Map For Portlib
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+Port4	KEYWORD1
+Port8	KEYWORD1
+Port16  KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+Port4	KEYWORD2
+Port8	KEYWORD2
+Port16  KEYWORD2
+Write	KEYWORD2
+Read	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
