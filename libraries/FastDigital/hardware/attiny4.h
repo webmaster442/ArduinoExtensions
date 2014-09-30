@@ -69,45 +69,53 @@ __inline__ int ReadD4()
 
 __inline__ void WriteD5(int value)
 {
+	PWMOff(5);
 	if (value) PORTA |= 1 << 5;
 	else PORTA &= ~(1 << 5);
 }
 
 __inline__ int ReadD5()
 {
+	PWMOff(5);
 	return PINA & (1 << 5);
 }
 
 __inline__ void WriteD6(int value)
 {
+	PWMOff(6);
 	if (value) PORTA |= 1 << 6;
 	else PORTA &= ~(1 << 6);
 }
 
 __inline__ int ReadD6()
 {
+	PWMOff(6);
 	return PINA & (1 << 6);
 }
 
 __inline__ void WriteD7(int value)
 {
+	PWMOff(7);
 	if (value) PORTA |= 1 << 7;
 	else PORTA &= ~(1 << 7);
 }
 
 __inline__ int ReadD7()
 {
+	PWMOff(7);
 	return PINA & (1 << 7);
 }
 
 __inline__ void WriteD8(int value)
 {
+	PWMOff(8);
 	if (value) PORTB |= 1 << 2;
 	else PORTB &= ~(1 << 2);
 }
 
 __inline__ int ReadD8()
 {
+	PWMOff(8);
 	return PINB & (1 << 2);
 }
 
@@ -190,34 +198,40 @@ __inline__ int ReadA4()
 
 __inline__ void WriteA5(int value)
 {
+	PWMOff(5);
 	if (value) PORTA |= 1 << 5;
 	else PORTA &= ~(1 << 5);
 }
 
 __inline__ int ReadA5()
 {
+	PWMOff(5);
 	return PINA & (1 << 5);
 }
 
 __inline__ void WriteA6(int value)
 {
+	PWMOff(6);
 	if (value) PORTA |= 1 << 6;
 	else PORTA &= ~(1 << 6);
 }
 
 __inline__ int ReadA6()
 {
+	PWMOff(6);
 	return PINA & (1 << 6);
 }
 
 __inline__ void WriteA7(int value)
 {
+	PWMOff(7);
 	if (value) PORTA |= 1 << 7;
 	else PORTA &= ~(1 << 7);
 }
 
 __inline__ int ReadA7()
 {
+	PWMOff(7);
 	return PINA & (1 << 7);
 }
 

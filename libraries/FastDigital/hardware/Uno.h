@@ -44,12 +44,14 @@ __inline__ int ReadD2()
 
 __inline__ void WriteD3(int value)
 {
+	PWMOff(3);
 	if (value) PORTD |= 1 << 3;
 	else PORTD &= ~(1 << 3);
 }
 
 __inline__ int ReadD3()
 {
+	PWMOff(3);
 	return PIND & (1 << 3);
 }
 
@@ -66,23 +68,27 @@ __inline__ int ReadD4()
 
 __inline__ void WriteD5(int value)
 {
+	PWMOff(5);
 	if (value) PORTD |= 1 << 5;
 	else PORTD &= ~(1 << 5);
 }
 
 __inline__ int ReadD5()
 {
+	PWMOff(5);
 	return PIND & (1 << 5);
 }
 
 __inline__ void WriteD6(int value)
 {
+	PWMOff(6);
 	if (value) PORTD |= 1 << 6;
 	else PORTD &= ~(1 << 6);
 }
 
 __inline__ int ReadD6()
 {
+	PWMOff(6);
 	return PIND & (1 << 6);
 }
 
@@ -110,34 +116,40 @@ __inline__ int ReadD8()
 
 __inline__ void WriteD9(int value)
 {
+	PWMOff(9);
 	if (value) PORTB |= 1 << 1;
 	else PORTB &= ~(1 << 1);
 }
 
 __inline__ int ReadD9()
 {
+	PWMOff(9);
 	return PINB & (1 << 1);
 }
 
 __inline__ void WriteD10(int value)
 {
+	PWMOff(10);
 	if (value) PORTB |= 1 << 2;
 	else PORTB &= ~(1 << 2);
 }
 
 __inline__ int ReadD10()
 {
+	PWMOff(10);
 	return PINB & (1 << 2);
 }
 
 __inline__ void WriteD11(int value)
 {
+	PWMOff(11);
 	if (value) PORTB |= 1 << 3;
 	else PORTB &= ~(1 << 3);
 }
 
 __inline__ int ReadD11()
 {
+	PWMOff(11);
 	return PINB & (1 << 3);
 }
 

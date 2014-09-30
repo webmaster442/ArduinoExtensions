@@ -22,6 +22,12 @@
 	#define FAST-DIGITAL
 #endif
 
+__inline__ void PWMOff(int pin)
+{
+	uint8_t timer = digitalPinToTimer(pin);
+	turnOffPWM(timer);
+}
+
 /* CPU Defines and includes */
 #if defined (__AVR_ATmega48__) || defined (__AVR_ATmega48P__) || defined (__AVR_ATmega88__) || defined (__AVR_ATmega88P__) || defined (__AVR_ATmega168__) || defined (__AVR_ATmega168P__) || defined (__AVR_ATmega328P__)
 	#include "hardware/Uno.h"
