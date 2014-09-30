@@ -148,6 +148,7 @@ ReadA14	KEYWORD2
 ReadA15	KEYWORD2
 FastRead	KEYWORD2
 FastWrite	KEYWORD2
+PWMOff	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
