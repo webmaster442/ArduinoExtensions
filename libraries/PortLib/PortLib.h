@@ -10,7 +10,7 @@ class Port4
 		byte _pins[4];
 		int _PORTMODE;
 	public:
-		Port8(int p1, int p2, int p3, int p4, int PORTMODE);
+		Port4(int p1, int p2, int p3, int p4, int PORTMODE);
 		void Write(byte Data);
 		byte Read();
 		void PortMode(int PORTMODE);
