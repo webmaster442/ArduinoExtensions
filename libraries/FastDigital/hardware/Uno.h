@@ -251,4 +251,62 @@ __inline__ int ReadA7()
 	return PINC & (1 << 7);
 }
 
+void FastWrite(int pin, int value)
+{
+	switch (pin)
+	{
+		case 0: WriteD0(value); break;
+		case 1: WriteD1(value); break;
+		case 2: WriteD2(value); break;
+		case 3: WriteD3(value); break;
+		case 4: WriteD4(value); break;
+		case 5: WriteD5(value); break;
+		case 6: WriteD6(value); break;
+		case 7: WriteD7(value); break;
+		case 8: WriteD8(value); break;
+		case 9: WriteD9(value); break;
+		case 10: WriteD10(value); break;
+		case 11: WriteD11(value); break;
+		case 12: WriteD12(value); break;
+		case 13: WriteD13(value); break;
+		case A0: WriteA0(value); break;
+		case A1: WriteA1(value); break;
+		case A2: WriteA2(value); break;
+		case A3: WriteA3(value); break;
+		case A4: WriteA4(value); break;
+		case A5: WriteA5(value); break;
+		case A6: WriteA6(value); break;
+		case A7: WriteA7(value); break;
+	}
+}
+
+int FastRead(int pin)
+{
+	switch (pin)
+	{
+		case 0: return ReadD0();
+		case 1: return ReadD1();
+		case 2: return ReadD2();
+		case 3: return ReadD3();
+		case 4: return ReadD4();
+		case 5: return ReadD5();
+		case 6: return ReadD6();
+		case 7: return ReadD7();
+		case 8: return ReadD8();
+		case 9: return ReadD9();
+		case 10: return ReadD10();
+		case 11: return ReadD11();
+		case 12: return ReadD12();
+		case 13: return ReadD13();
+		case A0: return ReadA0();
+		case A1: return ReadA1();
+		case A2: return ReadA2();
+		case A3: return ReadA3();
+		case A4: return ReadA4();
+		case A5: return ReadA5();
+		case A6: return ReadA6();
+		case A7: return ReadA7();
+	}
+}
+
 #endif

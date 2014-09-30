@@ -146,6 +146,8 @@ ReadA12	KEYWORD2
 ReadA13	KEYWORD2
 ReadA14	KEYWORD2
 ReadA15	KEYWORD2
+FastRead	KEYWORD2
+FastWrite	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
