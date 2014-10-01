@@ -54,6 +54,12 @@ Tools tested with Arduino IDE 1.0.6
 
 * OneWire Library
 	http://www.pjrc.com/teensy/td_libs_OneWire.html
+	
+* FastDigital Library
+	https://github.com/webmaster442/ArduinoExtensions/wiki/FastDigital-Lib-documentation
+
+* PortLib
+	https://github.com/webmaster442/ArduinoExtensions/wiki/PortLib-Documentation
 
 ##Tools
 * Termite: a simple RS232 terminal
