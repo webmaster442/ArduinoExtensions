@@ -1,0 +1,24 @@
+#######################################
+# Syntax Coloring Map For UtilLib
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+BcdDecode	KEYWORD2
+BcdEncode	KEYWORD2
+HighByte	KEYWORD2
+LowByte	KEYWORD2
+AanlogWriteMilivolts	KEYWORD2
+ShiftOut	KEYWORD2
+SevenSegmentNumber	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+CC
+CA
