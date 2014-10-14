@@ -54,6 +54,9 @@ Tools tested with Arduino IDE 1.0.6
 
 * OneWire Library
 	http://www.pjrc.com/teensy/td_libs_OneWire.html
+	
+* USB Host Shield 2.0
+	https://github.com/felis/USB_Host_Shield_2.0
 
 * FastDigital Library
 	https://github.com/webmaster442/ArduinoExtensions/wiki/FastDigital-Lib-documentation
