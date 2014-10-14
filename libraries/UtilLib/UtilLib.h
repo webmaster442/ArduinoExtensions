@@ -9,6 +9,9 @@
 #ifndef UTILLIB_H
 #define UTILLIB_H
 
+#include <Arduino.h>
+#include "pins_arduino.h"
+
 /*
 -------------------------------------------------------------------------------
 	CONSTANTS
@@ -22,7 +25,6 @@
 	UTILS
 -------------------------------------------------------------------------------
 */
-
 __inline__ byte BcdDecode(byte value)
 {
 	byte ret = (value & 0xF0) >> 4;
@@ -62,9 +64,33 @@ __inline__ byte LowByte(unsigned int value)
 	I/O Functions
 -------------------------------------------------------------------------------
 */
-__inline__ void AanlogWriteMilivolts(int milivolts)
+__inline__ void AanlogWriteMilivolts(int pin, int milivolts)
 {
-	return (255 * milivolts) / 500;
+	analogWrite(pin, (255 * milivolts) / 500);
+}
+
+int GetVccMiliVolts()
+{
+	const longscaleConst = 1156.300 * 1000;
+	// Read 1.1V reference against Avcc
+	#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+		ADMUX = _BV(REFS0) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
+	#elif defined (__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__)
+		ADMUX = _BV(MUX5) | _BV(MUX0);
+	#elif defined (__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
+		ADMUX = _BV(MUX3) | _BV(MUX2);
+	#else
+		ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
+	#endif 
+	delay(2); // Wait for Vref to settle
+	ADCSRA |= _BV(ADSC); // Start conversion
+	while(bit_is_set(ADCSRA,ADSC)); // measuring
+	uint8_t low = ADCL; // must read ADCL first - it then locks ADCH 
+	uint8_t high = ADCH; // unlocks both
+	longresult = (high<<8) | low;
+	result = scaleConst / result;
+	// Calculate Vcc (in mV); 1125300 = 1.1*1023*1000
+	return(int)result; // Vcc in millivolts
 }
 
 __inline__ void ShiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, byte val)
@@ -104,8 +130,8 @@ __inline__ void ShiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, lo
 
 byte SevenSegmentNumber(byte number, byte common)
 {
-	static byte cc = { 0x3F, 0x06, 0x5B, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x40 };
-	static byte ca = { 0xC0, 0xF9, 0xA4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90, 0xbf };
+	static byte cc[] = { 0x3F, 0x06, 0x5B, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x40 };
+	static byte ca[] = { 0xC0, 0xF9, 0xA4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90, 0xbf };
 	if (number < 0 || number > 9)
 	{
 		if (common == CC) return cc[10];
