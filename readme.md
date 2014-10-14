@@ -4,13 +4,13 @@ This package contains additional board definitions & libraries that are not
 included in the default installation of the arduino software for various reasons.
 
 Getting these software components from the internet is a bit time consuming.
-So I created this installer which automaticaly installs the following components.
+So I created this installer which automatically installs the following components.
 
 Tools tested with Arduino IDE 1.0.6
 
 ##Included hardware support
 
-* ATMega328 on Breadbord:
+* ATMega328 on Breadboard:
 	http://arduino.cc/en/Tutorial/ArduinoToBreadboard
  
 * ATTiny44/45/84/85:
@@ -31,7 +31,7 @@ Tools tested with Arduino IDE 1.0.6
 	https://github.com/yosemitebandit/PS2Keyboard
 	http://playground.arduino.cc/Main/PS2Keyboard
 
-* DigitalWriteFast - Interupt safe version with patch to work under arduino 1.0
+* DigitalWriteFast - Interrupt safe version with patch to work under arduino 1.0
 	https://code.google.com/p/digitalwritefast/
 
 * Time Library
@@ -54,12 +54,15 @@ Tools tested with Arduino IDE 1.0.6
 
 * OneWire Library
 	http://www.pjrc.com/teensy/td_libs_OneWire.html
-	
+
 * FastDigital Library
 	https://github.com/webmaster442/ArduinoExtensions/wiki/FastDigital-Lib-documentation
 
 * PortLib
 	https://github.com/webmaster442/ArduinoExtensions/wiki/PortLib-Documentation
+
+* UtilLib
+	https://github.com/webmaster442/ArduinoExtensions/wiki/UtilLib-Documentation
 
 ##Tools
 * Termite: a simple RS232 terminal

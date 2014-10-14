@@ -52,3 +52,9 @@ Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 
+[Files]
+Source: "..\bin-tools\*"; DestDir: "{app}\bin-tools"; Flags: ignoreversion recursesubdirs createallsubdirs confirmoverwrite;
+Source: "..\hardware\*"; DestDir: "{app}\hardware"; Flags: ignoreversion recursesubdirs createallsubdirs confirmoverwrite;
+Source: "..\libraries\*"; DestDir: "{app}\libraries"; Flags: ignoreversion recursesubdirs createallsubdirs confirmoverwrite;
+Source: "..\reference\*"; DestDir: "{app}\reference"; Flags: ignoreversion recursesubdirs createallsubdirs confirmoverwrite;
+
