@@ -59,6 +59,34 @@ __inline__ byte LowByte(unsigned int value)
 	return (value & 0x00FF);
 }
 
+__inline__ byte Map(byte x, byte in_min, byte in_max, byte out_min, byte out_max)
+{
+	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+__inline__ int Map(int x, int in_min, int in_max, int out_min, int out_max)
+{
+	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+__inline__ long int Map(long int x, long int in_min, long int in_max, long int out_min, long int out_max)
+{
+	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+unsigned int UnusedRAM()
+{
+	unsigned int byteCounter = 0;
+	byte *byteArray; 
+	while ( (byteArray = (byte*) malloc (byteCounter * sizeof(byte))) != NULL )
+	{
+		byteCounter++;
+		free(byteArray); 
+	}
+	free(byteArray); 
+	return byteCounter;
+}
+
 /*
 -------------------------------------------------------------------------------
 	I/O Functions
@@ -71,7 +99,7 @@ __inline__ void AanlogWriteMilivolts(int pin, int milivolts)
 
 int GetVccMiliVolts()
 {
-	const longscaleConst = 1156.300 * 1000;
+	const long intscaleConst = 1156.300 * 1000;
 	// Read 1.1V reference against Avcc
 	#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 		ADMUX = _BV(REFS0) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
@@ -87,7 +115,7 @@ int GetVccMiliVolts()
 	while(bit_is_set(ADCSRA,ADSC)); // measuring
 	uint8_t low = ADCL; // must read ADCL first - it then locks ADCH 
 	uint8_t high = ADCH; // unlocks both
-	longresult = (high<<8) | low;
+	long intresult = (high<<8) | low;
 	result = scaleConst / result;
 	// Calculate Vcc (in mV); 1125300 = 1.1*1023*1000
 	return(int)result; // Vcc in millivolts
@@ -117,7 +145,7 @@ __inline__ void ShiftOut(int8_t dataPin, uint8_t clockPin, uint8_t bitOrder, int
 	}
 }
 
-__inline__ void ShiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, long int val)
+__inline__ void ShiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, long int int val)
 {
 	uint8_t i;
 	for (i = 0; i < 32; i++)  {
