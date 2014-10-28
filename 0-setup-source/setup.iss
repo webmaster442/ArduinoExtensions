@@ -5,7 +5,7 @@
 #define MyAppVersion "1.0"
 #define MyAppPublisher "Webmaster442"
 #define MyAppURL "https://github.com/webmaster442/ArduinoExtensions"
-#define FolderInstall "ignoreversion recursesubdirs createallsubdirs confirmoverwrite"
+#define FolderInstall "ignoreversion recursesubdirs createallsubdirs"
 #define Types "compact custom full"
 
 
@@ -69,29 +69,30 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 ;------------------------------------------------------------------------------
 [Files]
 ;------------------------------------------------------------------------------
-Source: "..\bin-tools\termite\*"; DestDir: "{app}\bin-tools\termite"; Flags: {#FolderInstall}; Components: Tools\termite
-Source: "..\reference\*"; DestDir: "{app}\reference"; Flags: {#FolderInstall}; Components: References
+Source: "..\bin-tools\termite\*"; DestDir: "{app}\bin-tools\termite"; Flags: {#FolderInstall}; Components: Tools\termite; BeforeInstall: BackupIFExist
+Source: "..\reference\*"; DestDir: "{app}\reference"; Flags: {#FolderInstall}; Components: References; BeforeInstall: BackupIFExist
 ;------------------------------------------------------------------------------
-Source: "..\hardware\attiny\*"; DestDir: "{app}\hardware\attiny"; Flags: {#FolderInstall}; Components: Hardware\attiny
-Source: "..\hardware\breadboard\*"; DestDir: "{app}\hardware\breadboard"; Flags: {#FolderInstall}; Components: Hardware\breadboard
-Source: "..\hardware\sanguino\*"; DestDir: "{app}\hardware\sanguino"; Flags: {#FolderInstall}; Components: Hardware\sanguino
+Source: "..\hardware\attiny\*"; DestDir: "{app}\hardware\attiny"; Flags: {#FolderInstall}; Components: Hardware\attiny; BeforeInstall: BackupIFExist
+Source: "..\hardware\breadboard\*"; DestDir: "{app}\hardware\breadboard"; Flags: {#FolderInstall}; Components: Hardware\breadboard; BeforeInstall: BackupIFExist
+Source: "..\hardware\sanguino\*"; DestDir: "{app}\hardware\sanguino"; Flags: {#FolderInstall}; Components: Hardware\sanguino; BeforeInstall: BackupIFExist
 ;------------------------------------------------------------------------------
-Source: "..\libraries\Adafruit-MCP23017\*"; DestDir: "{app}\libraries\Adafruit-MCP23017"; Flags: {#FolderInstall}; Components: Libs\MCP23017
-Source: "..\libraries\avr-os\*"; DestDir: "{app}\libraries\avr-os"; Flags: {#FolderInstall}; Components: Libs\avros
-Source: "..\libraries\Bounce2\*"; DestDir: "{app}\libraries\Bounce2"; Flags: {#FolderInstall}; Components: Libs\Bounce2
-Source: "..\libraries\digitalWriteFast\*"; DestDir: "{app}\libraries\digitalWriteFast"; Flags: {#FolderInstall}; Components: Libs\digitalWriteFast
-Source: "..\libraries\DS1307RTC\*"; DestDir: "{app}\libraries\DS1307RTC"; Flags: {#FolderInstall}; Components: Libs\DS1307RTC
-Source: "..\libraries\FastDigital\*"; DestDir: "{app}\libraries\FastDigital"; Flags: {#FolderInstall}; Components: Libs\FastDigital
-Source: "..\libraries\LedControl\*"; DestDir: "{app}\libraries\LedControl"; Flags: {#FolderInstall}; Components: Libs\LedControl
-Source: "..\libraries\NewPing\*"; DestDir: "{app}\libraries\NewPing"; Flags: {#FolderInstall}; Components: Libs\NewPing
-Source: "..\libraries\OneWire\*"; DestDir: "{app}\libraries\OneWire"; Flags: {#FolderInstall}; Components: Libs\OneWire
-Source: "..\libraries\PortLib\*"; DestDir: "{app}\libraries\PortLib"; Flags: {#FolderInstall}; Components: Libs\PortLib
-Source: "..\libraries\PS2Keyboard\*"; DestDir: "{app}\libraries\PS2Keyboard"; Flags: {#FolderInstall}; Components: Libs\PS2Keyboard
-Source: "..\libraries\Time\*"; DestDir: "{app}\libraries\Time"; Flags: {#FolderInstall}; Components: Libs\Time
-Source: "..\libraries\TinyWireM\*"; DestDir: "{app}\libraries\TinyWireM"; Flags: {#FolderInstall}; Components: Libs\TinyWireM
-Source: "..\libraries\TinyWireS\*"; DestDir: "{app}\libraries\TinyWireS"; Flags: {#FolderInstall}; Components: Libs\TinyWireS
-Source: "..\libraries\USBHostShield\*"; DestDir: "{app}\libraries\USBHostShield"; Flags: {#FolderInstall}; Components: Libs\USBHostShield
-Source: "..\libraries\UtilLib\*"; DestDir: "{app}\libraries\UtilLib"; Flags: {#FolderInstall}; Components: Libs\UtilLib
+Source: "..\libraries\ADCLib\*"; DestDir: "{app}\libraries\ADCLib"; Flags: {#FolderInstall}; Components: Libs\ADCLib; BeforeInstall: BackupIFExist
+Source: "..\libraries\Adafruit-MCP23017\*"; DestDir: "{app}\libraries\Adafruit-MCP23017"; Flags: {#FolderInstall}; Components: Libs\MCP23017; BeforeInstall: BackupIFExist
+Source: "..\libraries\avr-os\*"; DestDir: "{app}\libraries\avr-os"; Flags: {#FolderInstall}; Components: Libs\avros; BeforeInstall: BackupIFExist
+Source: "..\libraries\Bounce2\*"; DestDir: "{app}\libraries\Bounce2"; Flags: {#FolderInstall}; Components: Libs\Bounce2; BeforeInstall: BackupIFExist
+Source: "..\libraries\digitalWriteFast\*"; DestDir: "{app}\libraries\digitalWriteFast"; Flags: {#FolderInstall}; Components: Libs\digitalWriteFast; BeforeInstall: BackupIFExist
+Source: "..\libraries\DS1307RTC\*"; DestDir: "{app}\libraries\DS1307RTC"; Flags: {#FolderInstall}; Components: Libs\DS1307RTC; BeforeInstall: BackupIFExist
+Source: "..\libraries\FastDigital\*"; DestDir: "{app}\libraries\FastDigital"; Flags: {#FolderInstall}; Components: Libs\FastDigital; BeforeInstall: BackupIFExist
+Source: "..\libraries\LedControl\*"; DestDir: "{app}\libraries\LedControl"; Flags: {#FolderInstall}; Components: Libs\LedControl; BeforeInstall: BackupIFExist
+Source: "..\libraries\NewPing\*"; DestDir: "{app}\libraries\NewPing"; Flags: {#FolderInstall}; Components: Libs\NewPing; BeforeInstall: BackupIFExist
+Source: "..\libraries\OneWire\*"; DestDir: "{app}\libraries\OneWire"; Flags: {#FolderInstall}; Components: Libs\OneWire; BeforeInstall: BackupIFExist
+Source: "..\libraries\PortLib\*"; DestDir: "{app}\libraries\PortLib"; Flags: {#FolderInstall}; Components: Libs\PortLib; BeforeInstall: BackupIFExist
+Source: "..\libraries\PS2Keyboard\*"; DestDir: "{app}\libraries\PS2Keyboard"; Flags: {#FolderInstall}; Components: Libs\PS2Keyboard; BeforeInstall: BackupIFExist
+Source: "..\libraries\Time\*"; DestDir: "{app}\libraries\Time"; Flags: {#FolderInstall}; Components: Libs\Time; BeforeInstall: BackupIFExist
+Source: "..\libraries\TinyWireM\*"; DestDir: "{app}\libraries\TinyWireM"; Flags: {#FolderInstall}; Components: Libs\TinyWireM; BeforeInstall: BackupIFExist
+Source: "..\libraries\TinyWireS\*"; DestDir: "{app}\libraries\TinyWireS"; Flags: {#FolderInstall}; Components: Libs\TinyWireS; BeforeInstall: BackupIFExist
+Source: "..\libraries\USBHostShield\*"; DestDir: "{app}\libraries\USBHostShield"; Flags: {#FolderInstall}; Components: Libs\USBHostShield; BeforeInstall: BackupIFExist
+Source: "..\libraries\UtilLib\*"; DestDir: "{app}\libraries\UtilLib"; Flags: {#FolderInstall}; Components: Libs\UtilLib; BeforeInstall: BackupIFExist
 
 
 ;------------------------------------------------------------------------------
@@ -103,6 +104,7 @@ Name: "Hardware\breadboard"; Description: "ATmega328p @ 8Mhz"; Types: {#Types}
 Name: "Hardware\sanguino"; Description: "ATmega644/ATmega1284"; Types: {#Types}
 ;------------------------------------------------------------------------------
 Name: "Libs"; Description: "{cm:libs}"; Types: {#Types}
+Name: "Libs\ADCLib"; Description: "ADCLib"; Types: {#Types}
 Name: "Libs\MCP23017"; Description: "MCP23017"; Types: {#Types}
 Name: "Libs\avros"; Description: "avr-os"; Types: {#Types}
 Name: "Libs\Bounce2"; Description: "Bounce2"; Types: {#Types}
@@ -132,8 +134,98 @@ hungarian.tools=Eszközök
 hungarian.libs=Könyvtárak
 hungarian.references=Referencia lábkiosztások
 hungarian.hardware=Hardver támogatás
+hungarian.ardupath=Válaszd ki az Arduino telepítési mappádat.
 ;------------------------------------------------------------------------------
 english.hardware=Hardware support
 english.libs=Libraries
 english.references=Reference pinouts
 english.tools=Tools
+english.ardupath=Please Select directory, whre arduino.exe is located
+
+;------------------------------------------------------------------------------
+[Code]
+//-----------------------------------------------------------------------------
+procedure OnDirEditChange(Sender: TObject);
+begin
+	if FileExists(AddBackslash(WizardDirValue) + 'Arduino.exe') then
+		WizardForm.NextButton.Enabled := True
+	else begin
+		MsgBox(CustomMessage('ardupath'), mbInformation, MB_OK);
+		WizardForm.NextButton.Enabled := False;
+	end;
+end;
+
+procedure CurPageChanged(CurPageID: Integer);
+var
+	File: string;
+	i: integer;
+  XML: string;
+begin
+	if CurPageID = wpSelectDir then
+	begin
+		WizardForm.DirEdit.OnChange := @OnDirEditChange;
+		OnDirEditChange(nil);
+	end;
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var ResultCode: Integer;  
+begin
+    if CurUninstallStep = usPostUninstall then
+    begin
+        // Do your uninstall time code here
+        Exec('cmd.exe', ExpandConstant('/c copy /y "{app}\.backup\*.*" "{app}\*.*"'), '', SW_SHOW, ewWaitUntilTerminated, ResultCode);
+        //MsgBox(ExpandConstant('/c copy /y "{app}\.backup\*.*" "{app}\*.*"'), mbInformation, MB_OK);
+        Exec('cmd.exe', ExpandConstant('/c echo Y | rmdir /s {app}\.backup'), '', SW_SHOW, ewWaitUntilTerminated, ResultCode);
+        //MsgBox(ExpandConstant('/c echo Y | rmdir /s {app}\.backup'), mbInformation, MB_OK);
+    end;
+end;
+
+procedure Explode(var Dest: TArrayOfString; Text: String; Separator: String);
+var i, p: Integer;
+begin
+  i := 0;
+  repeat
+    SetArrayLength(Dest, i+1);
+    p := Pos(Separator,Text);
+    if p > 0 then begin
+      Dest[i] := Copy(Text, 1, p-1);
+      Text := Copy(Text, p + Length(Separator), Length(Text));
+      i := i + 1;
+    end else begin
+      Dest[i] := Text;
+      Text := '';
+    end;
+  until Length(Text)=0;
+end;
+
+
+procedure CopyPath(Source: string; Target: string);
+  var strArray: TArrayOfString;
+  var Dir: string;
+  var i: integer;
+begin
+  Explode(strArray, Target, '\');
+  Dir := strArray[0];
+  for i:=1 to GetArrayLength(strArray)-1 do begin
+    if (DirExists(Dir) = false) then CreateDir(Dir);
+    FileCopy(Source, Target, False);
+    Dir := Dir +'\'+ strArray[i];
+  end;
+end;
+
+procedure BackupIFExist();
+  var F: string;
+  var dstpath: string;
+  var Backupdir: string;
+  var ResultCode: Integer;
+begin
+  F := ExpandConstant(CurrentFileName); 
+  if (FileExists(F)) then begin
+    BackupDir := ExpandConstant('{app}\.backup');
+    if (DirExists(BackupDir) = false) then CreateDir(BackupDir);
+    dstpath := CurrentFileName;
+    StringChangeEx(dstpath, '{app}', '{app}\.backup', true);
+    CopyPath(F, ExpandConstant(dstpath));
+  end;
+end;
