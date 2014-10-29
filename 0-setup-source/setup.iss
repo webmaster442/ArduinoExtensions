@@ -69,6 +69,7 @@ Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 ;------------------------------------------------------------------------------
 [Files]
 ;------------------------------------------------------------------------------
+Source: "..\readme.md"; DestDir: "{app}"; BeforeInstall: BackupIFExist
 Source: "..\bin-tools\termite\*"; DestDir: "{app}\bin-tools\termite"; Flags: {#FolderInstall}; Components: Tools\termite; BeforeInstall: BackupIFExist
 Source: "..\reference\*"; DestDir: "{app}\reference"; Flags: {#FolderInstall}; Components: References; BeforeInstall: BackupIFExist
 ;------------------------------------------------------------------------------
@@ -93,7 +94,8 @@ Source: "..\libraries\TinyWireM\*"; DestDir: "{app}\libraries\TinyWireM"; Flags:
 Source: "..\libraries\TinyWireS\*"; DestDir: "{app}\libraries\TinyWireS"; Flags: {#FolderInstall}; Components: Libs\TinyWireS; BeforeInstall: BackupIFExist
 Source: "..\libraries\USBHostShield\*"; DestDir: "{app}\libraries\USBHostShield"; Flags: {#FolderInstall}; Components: Libs\USBHostShield; BeforeInstall: BackupIFExist
 Source: "..\libraries\UtilLib\*"; DestDir: "{app}\libraries\UtilLib"; Flags: {#FolderInstall}; Components: Libs\UtilLib; BeforeInstall: BackupIFExist
-
+;------------------------------------------------------------------------------
+Source: "..\bin-tools\termite\*"; DestDir: "{app}\libraries\UtilLib"; Flags: {#FolderInstall}; Components: Tools\termite; BeforeInstall: BackupIFExist
 
 ;------------------------------------------------------------------------------
 [Components]
@@ -141,6 +143,16 @@ english.libs=Libraries
 english.references=Reference pinouts
 english.tools=Tools
 english.ardupath=Please Select directory, whre arduino.exe is located
+
+;------------------------------------------------------------------------------
+[Icons]
+;------------------------------------------------------------------------------
+Name: "{group}\Arduino with Extensions"; Filename: "{app}\arduino.exe"
+Name: "{group}\Readme"; Filename: "notepad.exe"; Parameters: "{app}\readme.md"
+Name: "{group}\UnInstall"; Filename: "{uninstallexe}"
+Name: "{group}\Termite"; Filename: "{app}\bin-tools\termite\Termite.exe"; Components: Tools\termite
+Name: "{group}\Controller Pinouts"; Filename: "{app}\reference\extensions\pinout-controller.html"; Components: References
+Name: "{group}\Board Pinouts"; Filename: "{app}\reference\extensions\pinout-boards.html"; Components: References
 
 ;------------------------------------------------------------------------------
 [Code]
