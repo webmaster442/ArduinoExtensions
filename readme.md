@@ -19,7 +19,7 @@ Tools tested with Arduino IDE 1.0.6
 * ATMega644p & ATMega1284:
 	https://code.google.com/p/sanguino/
 
-##Libraries
+##Libraries by others
 
 * TinyWireM & TinyWireS: Wire (I2C / TWI) library for the ATtiny85 (using USI)
 	http://playground.arduino.cc/Code/USIi2c
@@ -61,11 +61,16 @@ Tools tested with Arduino IDE 1.0.6
 * FastDigital Library
 	https://github.com/webmaster442/ArduinoExtensions/wiki/FastDigital-Lib-documentation
 
+##Libraries by me
+
 * PortLib
 	https://github.com/webmaster442/ArduinoExtensions/wiki/PortLib-Documentation
 
 * UtilLib
 	https://github.com/webmaster442/ArduinoExtensions/wiki/UtilLib-Documentation
+
+* ADCLib
+	https://github.com/webmaster442/ArduinoExtensions/wiki/ADCLib-Documentation
 
 ##Tools
 * Termite: a simple RS232 terminal

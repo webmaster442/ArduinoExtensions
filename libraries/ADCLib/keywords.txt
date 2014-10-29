@@ -1,25 +1,21 @@
 #######################################
-# Syntax Coloring Map For UtilLib
+# Syntax Coloring Map For ADCLib
 #######################################
 
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
+Analog
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
-BcdDecode	KEYWORD2
-BcdEncode	KEYWORD2
-HighByte	KEYWORD2
-LowByte	KEYWORD2
-AanlogWriteMilivolts	KEYWORD2
-ShiftOut	KEYWORD2
-SevenSegmentNumber	KEYWORD2
-GetVccMiliVolts	KEYWORD2
+Init	KEYWORD2
+GetVcc	KEYWORD2
+Read	KEYWORD2
+ReadMv	KEYWORD2
+ReadAvg	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
 #######################################
-CC	LITERAL1
-CA	LITERAL1
