@@ -1,22 +1,25 @@
 #include <RGBLedLib.h>
 
+//Create RGB LED object, Comon Cathode
 RGBLed LED(9, 10, 11, CC);
 
 void setup()
 {
   Serial.begin(9600);
+  //Set global brightness
   LED.Alpha(125);
 }
 
 void loop()
 {
-  LED.SetColor(COLOR_RED);
+  //Loop trough built in constant colors
+  LED.CurrentColor(COLOR_RED);
   Serial.println("COLOR_RED");
   delay(1000);
-  LED.SetColor(COLOR_BLUE);
+  LED.CurrentColor(COLOR_BLUE);
   Serial.println("COLOR_BLUE");
   delay(1000);
-  LED.SetColor(COLOR_BLACK);
+  LED.CurrentColor(COLOR_BLACK);
   Serial.println("COLOR_BLACK");
   delay(1000);
   LED.CurrentColor(COLOR_WHITE);
@@ -59,5 +62,4 @@ void loop()
   Serial.println("COLOR_YELLOW");
   delay(1000);
 }
-
 

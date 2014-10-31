@@ -34,14 +34,6 @@ Constants
 #define CC 0
 #define CA 1
 
-__inline__ int INTERPOLATE(int x1, int x2, float f)
-{
-	if (x2 >= x1) return x1 + ((x2 - x1) * f);
-	else return x1 - ((x1 - x2) * f); 
-}
-
-#define INTERPOLATE(x1, x2, f)	(((x1) + ((x1) - (x2))) * (f))
-
 /*-----------------------------------------------------------------------------
 Color Class
 -----------------------------------------------------------------------------*/
@@ -78,10 +70,11 @@ class RGBLed
 		void Alpha(byte value);
 		byte Alpha();
 		void CurrentColor(Color c);
+		void CurrentColor(byte r, byte b, byte g);
 		void CurrentColor(unsigned long int value);
 		Color CurrentColor();
-		void FadeTo(Color c, int ms);
-		void FadeTo(unsigned long int value, int ms);
+		void Fade(Color &in, Color &out);
+		void Fade(unsigned long int in, unsigned long int out);
 };
 
 #endif

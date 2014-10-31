@@ -115,6 +115,12 @@ void RGBLed::CurrentColor(unsigned long int value)
 	_RefreshOutput();
 }
 
+void RGBLed::CurrentColor(byte r, byte b, byte g)
+{
+	_current_color = Color(r, g, b);
+	_RefreshOutput();
+}
+
 Color RGBLed::CurrentColor()
 {
 	return _current_color;
@@ -131,25 +137,26 @@ void RGBLed::Alpha(byte value)
 	_RefreshOutput();
 }
 
-void RGBLed::FadeTo(Color c, int ms)
+void RGBLed::Fade(Color &in, Color &out)
 {
-	Color start = _current_color;
-	if (ms < 10) ms = 10;
-	int steps = ms / 10;
-	float faction = 1.0 / steps;
-	for (int i=0; i<steps; i++)
+	unsigned n_steps = 256;
+	unsigned time = 10;
+	int red_diff   = out.R() - in.R();
+	int green_diff = out.G() - in.G();
+	int blue_diff  = out.B() - in.B();
+	for ( unsigned i = 0; i < n_steps; ++i)
 	{
-		_current_color.R(INTERPOLATE(start.R(), c.R(), faction));
-		_current_color.G(INTERPOLATE(start.G(), c.G(), faction));
-		_current_color.B(INTERPOLATE(start.B(), c.B(), faction));
+		Color output ( in.R() + i * red_diff / n_steps, in.G() + i * green_diff / n_steps, in.B() + i * blue_diff/ n_steps);
+		/*put the analog pins to the proper output.*/
+		_current_color = output;
 		_RefreshOutput();
-		delay(10);
+		delay(time);
 	}
-	_current_color = c;
 }
 
-void RGBLed::FadeTo(unsigned long int value, int ms)
+void RGBLed::Fade(unsigned long int in, unsigned long int out)
 {
-	Color end(value);
-	FadeTo(end, ms);
+	Color input = Color(in);
+	Color output = Color(out);
+	Fade(input, output);
 }
