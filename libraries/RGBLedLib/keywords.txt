@@ -1,0 +1,41 @@
+#######################################
+# Syntax Coloring Map For UtilLib
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+Color	KEYWORD1
+RGBLed	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+R	KEYWORD2
+G	KEYWORD2
+B	KEYWORD2
+Set	KEYWORD2
+Alpha	KEYWORD2
+CurrentColor	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+CC	LITERAL1
+CA	LITERAL1
+COLOR_RED	LITERAL1
+COLOR_BLUE	LITERAL1
+COLOR_BLACK	LITERAL1
+COLOR_WHITE	LITERAL1
+COLOR_DARKRED	LITERAL1
+COLOR_PINK	LITERAL1
+COLOR_TEAL	LITERAL1
+COLOR_LIGHTGREEN	LITERAL1
+COLOR_GREEN	LITERAL1
+COLOR_TURQOISE	LITERAL1
+COLOR_DARKBLUE	LITERAL1
+COLOR_VIOLET	LITERAL1
+COLOR_GRAY25	LITERAL1
+COLOR_GRAY50	LITERAL1
+COLOR_DARKYELLOW	LITERAL1
+COLOR_YELLOW	LITERAL1

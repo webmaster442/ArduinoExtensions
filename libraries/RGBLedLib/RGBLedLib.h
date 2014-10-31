@@ -1,8 +1,19 @@
+/*
+-------------------------------------------------------------------------------
+	RGBLedLib
+-------------------------------------------------------------------------------
+	File created by: webmaster442
+	https://github.com/webmaster442/ArduinoExtensions
+-------------------------------------------------------------------------------
+*/
 #ifndef RGBLEDLIB_H
 #define RGBLEDLIB_H
 
 #include <arduino.h>
 
+/*-----------------------------------------------------------------------------
+Constants
+-----------------------------------------------------------------------------*/
 #define COLOR_RED			0xFF0000
 #define COLOR_BLUE			0x0000FF
 #define COLOR_BLACK			0x000000
@@ -20,6 +31,20 @@
 #define COLOR_DARKYELLOW	0x808000
 #define COLOR_YELLOW		0xFFFF00
 
+#define CC 0
+#define CA 1
+
+__inline__ int INTERPOLATE(int x1, int x2, float f)
+{
+	if (x2 >= x1) return x1 + ((x2 - x1) * f);
+	else return x1 - ((x1 - x2) * f); 
+}
+
+#define INTERPOLATE(x1, x2, f)	(((x1) + ((x1) - (x2))) * (f))
+
+/*-----------------------------------------------------------------------------
+Color Class
+-----------------------------------------------------------------------------*/
 class Color
 {
 	private:
@@ -37,19 +62,26 @@ class Color
 		void Set(unsigned long int value);
 };
 
+/*-----------------------------------------------------------------------------
+RGBLed Class
+-----------------------------------------------------------------------------*/
 class RGBLed
 {
 	private:
 		int _pr, _pg, _pb;
+		int _mode;
 		Color _current_color;
 		byte _alpha;
 		void _RefreshOutput();
 	public:
-		RGBLed(int pwmR, int pwmG, int pwmB);
+		RGBLed(int pwmR, int pwmG, int pwmB, int mode);
 		void Alpha(byte value);
 		byte Alpha();
-		void SetColor(Color c);
-		void SetColor(unsigned long int value);
+		void CurrentColor(Color c);
+		void CurrentColor(unsigned long int value);
+		Color CurrentColor();
+		void FadeTo(Color c, int ms);
+		void FadeTo(unsigned long int value, int ms);
 };
 
 #endif

@@ -1,3 +1,11 @@
+/*
+-------------------------------------------------------------------------------
+	RGBLedLib
+-------------------------------------------------------------------------------
+	File created by: webmaster442
+	https://github.com/webmaster442/ArduinoExtensions
+-------------------------------------------------------------------------------
+*/
 #include <arduino.h>
 #include "RGBLedLib.h"
 
@@ -66,32 +74,50 @@ void Color::Set(unsigned long int value)
 RGBLed Class implementation
 -----------------------------------------------------------------------------*/
 
-RGBLed::RGBLed(int pwmR, int pwmG, int pwmB)
+RGBLed::RGBLed(int pwmR, int pwmG, int pwmB, int mode)
 {
 	_pr = pwmR;
 	_pg = pwmG;
 	_pb = pwmB;
+	_mode = mode;
 	_alpha = 255;
+	pinMode(_pr, OUTPUT);
+	pinMode(_pg, OUTPUT);
+	pinMode(_pb, OUTPUT);
 }
 
 void RGBLed::_RefreshOutput()
 {
 	float mul = _alpha / 255.0;
-	analogWrite(_pr, _current_color.R() * mul);
-	analogWrite(_pg, _current_color.G() * mul);
-	analogWrite(_pb, _current_color.B() * mul);
+	if (_mode == CC)
+	{
+		analogWrite(_pr, _current_color.R() * mul);
+		analogWrite(_pg, _current_color.G() * mul);
+		analogWrite(_pb, _current_color.B() * mul);
+	}
+	else
+	{
+		analogWrite(_pr, (255 - _current_color.R()) * mul);
+		analogWrite(_pg, (255 - _current_color.G()) * mul);
+		analogWrite(_pb, (255 - _current_color.B()) * mul);
+	}
 }
 
-void RGBLed::SetColor(Color c)
+void RGBLed::CurrentColor(Color c)
 {
 	_current_color = c;
 	_RefreshOutput();
 }
 
-void RGBLed::SetColor(unsigned long int value)
+void RGBLed::CurrentColor(unsigned long int value)
 {
 	_current_color = Color(value);
 	_RefreshOutput();
+}
+
+Color RGBLed::CurrentColor()
+{
+	return _current_color;
 }
 
 byte RGBLed::Alpha()
@@ -103,4 +129,27 @@ void RGBLed::Alpha(byte value)
 {
 	_alpha = value;
 	_RefreshOutput();
+}
+
+void RGBLed::FadeTo(Color c, int ms)
+{
+	Color start = _current_color;
+	if (ms < 10) ms = 10;
+	int steps = ms / 10;
+	float faction = 1.0 / steps;
+	for (int i=0; i<steps; i++)
+	{
+		_current_color.R(INTERPOLATE(start.R(), c.R(), faction));
+		_current_color.G(INTERPOLATE(start.G(), c.G(), faction));
+		_current_color.B(INTERPOLATE(start.B(), c.B(), faction));
+		_RefreshOutput();
+		delay(10);
+	}
+	_current_color = c;
+}
+
+void RGBLed::FadeTo(unsigned long int value, int ms)
+{
+	Color end(value);
+	FadeTo(end, ms);
 }
