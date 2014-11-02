@@ -72,6 +72,9 @@ Tools tested with Arduino IDE 1.0.6
 * ADCLib
 	https://github.com/webmaster442/ArduinoExtensions/wiki/ADCLib-Documentation
 
+* RGBLedLib
+	https://github.com/webmaster442/ArduinoExtensions/wiki/RGBLedLib-documentation
+
 ##Tools
 * Termite: a simple RS232 terminal
 	http://www.compuphase.com/software_termite.htm
