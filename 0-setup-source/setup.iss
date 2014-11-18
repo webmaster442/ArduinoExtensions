@@ -57,8 +57,8 @@ Source: "..\hardware\sanguino\*"; DestDir: "{app}\hardware\sanguino"; Flags: {#F
 Source: "E:\svn\ArduinoExtensions\trunk\examples\I2CTerminal\*"; DestDir: "{app}\examples\I2CTerminal"; Flags: {#FolderInstall}; Components: Libs\DS1307RTC Libs\MCP23017; BeforeInstall: BackupIFExist
 ;------------------------------------------------------------------------------
 Source: "..\libraries\ADCLib\*"; DestDir: "{app}\libraries\ADCLib"; Flags: {#FolderInstall}; Components: Libs\ADCLib; BeforeInstall: BackupIFExist
-Source: "..\libraries\Adafruit-MCP23017\*"; DestDir: "{app}\libraries\Adafruit-MCP23017"; Flags: {#FolderInstall}; Components: Libs\MCP23017; BeforeInstall: BackupIFExist
-Source: "..\libraries\avr-os\*"; DestDir: "{app}\libraries\avr-os"; Flags: {#FolderInstall}; Components: Libs\avros; BeforeInstall: BackupIFExist
+Source: "..\libraries\AdafruitMCP23017\*"; DestDir: "{app}\libraries\AdafruitMCP23017"; Flags: {#FolderInstall}; Components: Libs\MCP23017; BeforeInstall: BackupIFExist
+Source: "..\libraries\avros\*"; DestDir: "{app}\libraries\avros"; Flags: {#FolderInstall}; Components: Libs\avros; BeforeInstall: BackupIFExist
 Source: "..\libraries\Bounce2\*"; DestDir: "{app}\libraries\Bounce2"; Flags: {#FolderInstall}; Components: Libs\Bounce2; BeforeInstall: BackupIFExist
 Source: "..\libraries\digitalWriteFast\*"; DestDir: "{app}\libraries\digitalWriteFast"; Flags: {#FolderInstall}; Components: Libs\digitalWriteFast; BeforeInstall: BackupIFExist
 Source: "..\libraries\DS1307RTC\*"; DestDir: "{app}\libraries\DS1307RTC"; Flags: {#FolderInstall}; Components: Libs\DS1307RTC; BeforeInstall: BackupIFExist
@@ -76,6 +76,8 @@ Source: "..\libraries\USBHostShield\*"; DestDir: "{app}\libraries\USBHostShield"
 Source: "..\libraries\UtilLib\*"; DestDir: "{app}\libraries\UtilLib"; Flags: {#FolderInstall}; Components: Libs\UtilLib; BeforeInstall: BackupIFExist
 ;------------------------------------------------------------------------------
 Source: "..\bin-tools\termite\*"; DestDir: "{app}\libraries\UtilLib"; Flags: {#FolderInstall}; Components: Tools\termite; BeforeInstall: BackupIFExist
+;------------------------------------------------------------------------------
+Source: "..\drivers\usbtinyisp_libusb-win32_1.2.1.0\*"; DestDir: "{app}\drivers\usbtinyisp_libusb-win32_1.2.1.0"; Flags: {#FolderInstall}; Components: Drivers\USBTinyISP; BeforeInstall: BackupIFExist
 
 ;------------------------------------------------------------------------------
 [Components]
@@ -108,6 +110,9 @@ Name: "Libs\UtilLib"; Description: "UtilLib"; Types: {#Types}
 Name: "Tools"; Description: "{cm:tools}"; Types: {#Types}
 Name: "Tools\termite"; Description: "Termite"; Types: {#Types}
 Name: "References"; Description: "{cm:references}"; Types: full
+;------------------------------------------------------------------------------
+Name: "Drivers"; Description: "{cm:drivers}"; Types: {#Types}
+Name: "Drivers\USBTinyISP"; Description: "USBTinyISP"; Types: {#Types}
 
 
 ;------------------------------------------------------------------------------
@@ -118,12 +123,14 @@ hungarian.libs=Könyvtárak
 hungarian.references=Referencia lábkiosztások
 hungarian.hardware=Hardver támogatás
 hungarian.ardupath=Válaszd ki az Arduino telepítési mappádat.
+hungarian.drivers=Illesztõprogramok
 ;------------------------------------------------------------------------------
 english.hardware=Hardware support
 english.libs=Libraries
 english.references=Reference pinouts
 english.tools=Tools
 english.ardupath=Please Select directory, whre arduino.exe is located
+english.drivers=Drivers
 
 ;------------------------------------------------------------------------------
 [Icons]
