@@ -1,3 +1,8 @@
+/*-------------------------------------------------------------------------
+ I2C Terminal menu functions
+ Created by: webmaster442
+ https://github.com/webmaster442/ArduinoExtensions
+ -------------------------------------------------------------------------*/
 #include <Time.h>
 #include <DS1307RTC.h>
 
@@ -60,6 +65,7 @@ __inline__ void MenuDS1307Read()
   tmElements_t time;
   if (RTC.read(time))
   {
+    Serial.println("--------------- DS1307 Reader ---------------");
     Serial.print("Time (H:M:S): ");
     print2digits(time.Hour);
     Serial.write(':');
@@ -82,5 +88,72 @@ __inline__ void MenuDS1307Read()
   }
 }
 
+/*-------------------------------------------------------------------------
+ DS1307 Writer
+ -------------------------------------------------------------------------*/
+__inline__ void MenuDS1307Write()
+{
+  byte values[3];
+  tmElements_t time;
+  Serial.println("--------------- DS1307 Setup ---------------");
+  int val;
+  do
+  {
+    Serial.println("Enter time in the following format: hour:minute:seconds");
+    Serial.println("Example input: 11:00:00")
+      ReadLine();
+    val = sscanf(cmdbuff, "%d:%d:%d", &values[0], &values[1], &values[2]);
+  }
+  while (val != 3);
+  time.Hour = values[0];
+  time.Minute = values[1];
+  time.Second = values[2];
+  do
+  {
+    Serial.println("Enter date in the following format: year-month-day");
+    Serial.println("Example input: 14-01-01");
+    ReadLine();
+    val = sscanf(cmdbuff, "%d-%d-%d", &values[0], &values[1], &values[2]);
+  }
+  while (val != 3);
+  time.Day = values[3];
+  time.Month = values[2];
+  time.Year = values[1];
+  if (RTC.write(time)) Serial.println("Configuration OK!");
+  else Serial.println("Configuration Error! :(");
+}
 
+/*-------------------------------------------------------------------------
+ EEPROM Dump
+ -------------------------------------------------------------------------*/
+__inline__ void MenuEepromDump()
+{
+  byte devaddress;
+  byte data = 0x00;
+  unsigned int readlength, startadress;
+  Serial.println("Enter Device adress in decimal: ");
+  ReadLine();
+  devaddress = (byte)atoi(cmdbuff);
+  Serial.println("Start memory adress:");
+  ReadLine();
+  startadress = atoi(cmdbuff);
+  Serial.println("Read length: ");
+  ReadLine();
+  readlength = atoi(cmdbuff);
+
+  Wire.beginTransmission(devaddress);
+  Wire.write((int)(startadress >> 8)); // MSB
+  Wire.write((int)(startadress & 0xFF)); // LSB
+  Wire.endTransmission();
+  Wire.requestFrom(devaddress,readlength);
+  unsigned int counter = 0;
+  Serial.println("EEPROM Data:");
+  while (Wire.available())
+  {
+    Serial.print(Wire.read(), HEX);
+    Serial.print(" ");
+    ++counter;
+    if (counter%8==0 && counter > 0) Serial.println();
+  } 
+}
 

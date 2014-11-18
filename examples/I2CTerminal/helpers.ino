@@ -1,3 +1,8 @@
+/*-------------------------------------------------------------------------
+ I2C Terminal Helper functions
+ Created by: webmaster442
+ https://github.com/webmaster442/ArduinoExtensions
+ -------------------------------------------------------------------------*/
 __inline void ReadLine()
 {
   char last = ' ';

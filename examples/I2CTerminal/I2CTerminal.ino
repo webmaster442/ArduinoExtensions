@@ -1,3 +1,8 @@
+/*-------------------------------------------------------------------------
+ I2C Terminal
+ Created by: webmaster442
+ https://github.com/webmaster442/ArduinoExtensions
+ -------------------------------------------------------------------------*/
 #include <Wire.h>
 #include <Time.h>
 #include <DS1307RTC.h>
@@ -57,12 +62,20 @@ void loop()
   case 2:
     MenuDS1307Read();
     break;
+  case 3:
+    MenuDS1307Write();
+    break;
+  case 4:
+    MenuEepromDump();
+    break;
   default:
     Serial.print("Unknown command: ");
     Serial.println(cmdbuff);
     break;
   }
 }
+
+
 
 
 
