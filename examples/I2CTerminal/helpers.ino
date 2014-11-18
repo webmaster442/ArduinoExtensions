@@ -3,7 +3,7 @@
  Created by: webmaster442
  https://github.com/webmaster442/ArduinoExtensions
  -------------------------------------------------------------------------*/
-__inline void ReadLine()
+__inline__ void ReadLine()
 {
   char last = ' ';
   cmdindex = 0;

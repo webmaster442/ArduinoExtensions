@@ -5,6 +5,7 @@
  -------------------------------------------------------------------------*/
 #include <Time.h>
 #include <DS1307RTC.h>
+#include <Adafruit_MCP23017.h>
 
 /*-------------------------------------------------------------------------
  Main Menu
@@ -15,7 +16,7 @@ __inline__ void MenuMain()
   Serial.println("I2C Tools");
   Serial.println("------------------------------------------------------");
   Serial.println("Available commands:");
-  for (int i=0; i<COMMAND_COUNT; i++)
+  for (i=0; i<COMMAND_COUNT; i++)
   {
     Serial.println(commands[i]);
   }
@@ -43,6 +44,24 @@ __inline__ void MenuScanner()
       Serial.print(" (dec. ");
       Serial.print(address);
       Serial.print(") ");
+      switch (address)
+      {
+      case 0x68:
+        Serial.println(" - DS1307 RTC");
+      case 0x20:
+      case 0x21:
+      case 0x22:
+      case 0x23:
+      case 0x24:
+      case 0x25:
+      case 0x26:
+      case 0x27:
+        Serial.println(" - MCP23017 device");
+        break;
+      default:
+        Serial.println();
+
+      }
       ++found;
     }
     else if (error == 4)
@@ -100,8 +119,8 @@ __inline__ void MenuDS1307Write()
   do
   {
     Serial.println("Enter time in the following format: hour:minute:seconds");
-    Serial.println("Example input: 11:00:00")
-      ReadLine();
+    Serial.println("Example input: 11:00:00");
+    ReadLine();
     val = sscanf(cmdbuff, "%d:%d:%d", &values[0], &values[1], &values[2]);
   }
   while (val != 3);
@@ -128,6 +147,7 @@ __inline__ void MenuDS1307Write()
  -------------------------------------------------------------------------*/
 __inline__ void MenuEepromDump()
 {
+  Serial.println("--------------- EEPROM Memory dumper ---------------");
   byte devaddress;
   byte data = 0x00;
   unsigned int readlength, startadress;
@@ -155,5 +175,45 @@ __inline__ void MenuEepromDump()
     ++counter;
     if (counter%8==0 && counter > 0) Serial.println();
   } 
+}
+
+/*-------------------------------------------------------------------------
+ MCP23017 Reader
+ -------------------------------------------------------------------------*/
+__inline__ void MenuMCP23017Read()
+{
+  Serial.println("---------------  MCP23017 Reader ---------------");
+  Serial.println("Enter MCP23017 adress: (0->7)");
+  ReadLine();
+  int adress = atoi(cmdbuff);
+  mcp.begin(adress);
+  for (i=0; i<16; i++) mcp.pinMode(i, INPUT);
+  long int value = mcp.readGPIOAB();
+  Serial.print("Port A: ");
+  Serial.print((value & 0xFF00) >> 8, HEX);
+  Serial.print(" PORT B: ");
+  Serial.println((value & 0x00FF), HEX);
+}
+
+/*-------------------------------------------------------------------------
+ MCP23017 Writer
+ -------------------------------------------------------------------------*/
+__inline__ void MenuMCP23017Writer()
+{
+  Serial.println("---------------  MCP23017 Writer ---------------");
+  Serial.println("Enter MCP23017 adress: (0->7)");
+  ReadLine();
+  int adress = atoi(cmdbuff);
+  mcp.begin(adress);
+  for (i=0; i<16; i++) mcp.pinMode(i, OUTPUT);
+  long int value = mcp.readGPIOAB();
+  Serial.println("PORT A value (in decimal!): ");
+  ReadLine();
+  unsigned long int val = atoi(cmdbuff) << 8;
+  Serial.println("PORT B value (in decimal!): ");
+  ReadLine();
+  val += atoi(cmdbuff);
+  mcp.writeGPIOAB(val);
+  Serial.println("MCP GPIO SET!");
 }
 

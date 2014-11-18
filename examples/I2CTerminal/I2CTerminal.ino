@@ -6,6 +6,7 @@
 #include <Wire.h>
 #include <Time.h>
 #include <DS1307RTC.h>
+#include <Adafruit_MCP23017.h>
 
 #define COMMAND_COUNT 5
 
@@ -23,10 +24,12 @@
 #endif
 
 static const char *commands[] = { 
-  "cmd-list", "i2c-scann", "ds1307-read", "ds1307-write", "eeprom-dump" };
+  "cmd-list", "i2c-scan", "ds1307-read", "ds1307-write", "eeprom-dump"
+    "mcp2301-read", "mcp2301-write"};
 char cmdbuff[15];
 int cmdindex = 0;
 int i;
+Adafruit_MCP23017 mcp;
 
 void setup()
 {
@@ -68,12 +71,19 @@ void loop()
   case 4:
     MenuEepromDump();
     break;
+  case 5:
+    MenuMCP23017Read();
+    break;
+  case 6:
+    MenuMCP23017Writer();
+    break;
   default:
     Serial.print("Unknown command: ");
     Serial.println(cmdbuff);
     break;
   }
 }
+
 
 
 
