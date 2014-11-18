@@ -43,6 +43,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "hungarian"; MessagesFile: "compiler:Languages\Hungarian.isl"
 
 ;------------------------------------------------------------------------------
+
 [Files]
 ;------------------------------------------------------------------------------
 Source: "..\readme.md"; DestDir: "{app}"; BeforeInstall: BackupIFExist
@@ -52,6 +53,8 @@ Source: "..\reference\*"; DestDir: "{app}\reference"; Flags: {#FolderInstall}; C
 Source: "..\hardware\attiny\*"; DestDir: "{app}\hardware\attiny"; Flags: {#FolderInstall}; Components: Hardware\attiny; BeforeInstall: BackupIFExist
 Source: "..\hardware\breadboard\*"; DestDir: "{app}\hardware\breadboard"; Flags: {#FolderInstall}; Components: Hardware\breadboard; BeforeInstall: BackupIFExist
 Source: "..\hardware\sanguino\*"; DestDir: "{app}\hardware\sanguino"; Flags: {#FolderInstall}; Components: Hardware\sanguino; BeforeInstall: BackupIFExist
+;------------------------------------------------------------------------------
+Source: "E:\svn\ArduinoExtensions\trunk\examples\I2CTerminal\*"; DestDir: "{app}\examples\I2CTerminal"; Flags: {#FolderInstall}; Components: Libs\DS1307RTC Libs\MCP23017; BeforeInstall: BackupIFExist
 ;------------------------------------------------------------------------------
 Source: "..\libraries\ADCLib\*"; DestDir: "{app}\libraries\ADCLib"; Flags: {#FolderInstall}; Components: Libs\ADCLib; BeforeInstall: BackupIFExist
 Source: "..\libraries\Adafruit-MCP23017\*"; DestDir: "{app}\libraries\Adafruit-MCP23017"; Flags: {#FolderInstall}; Components: Libs\MCP23017; BeforeInstall: BackupIFExist
@@ -65,6 +68,7 @@ Source: "..\libraries\NewPing\*"; DestDir: "{app}\libraries\NewPing"; Flags: {#F
 Source: "..\libraries\OneWire\*"; DestDir: "{app}\libraries\OneWire"; Flags: {#FolderInstall}; Components: Libs\OneWire; BeforeInstall: BackupIFExist
 Source: "..\libraries\PortLib\*"; DestDir: "{app}\libraries\PortLib"; Flags: {#FolderInstall}; Components: Libs\PortLib; BeforeInstall: BackupIFExist
 Source: "..\libraries\PS2Keyboard\*"; DestDir: "{app}\libraries\PS2Keyboard"; Flags: {#FolderInstall}; Components: Libs\PS2Keyboard; BeforeInstall: BackupIFExist
+Source: "..\libraries\RGBLedLib\*"; DestDir: "{app}\libraries\RGBLedLib"; Flags: {#FolderInstall}; Components: Libs\RGBLedLib;
 Source: "..\libraries\Time\*"; DestDir: "{app}\libraries\Time"; Flags: {#FolderInstall}; Components: Libs\Time; BeforeInstall: BackupIFExist
 Source: "..\libraries\TinyWireM\*"; DestDir: "{app}\libraries\TinyWireM"; Flags: {#FolderInstall}; Components: Libs\TinyWireM; BeforeInstall: BackupIFExist
 Source: "..\libraries\TinyWireS\*"; DestDir: "{app}\libraries\TinyWireS"; Flags: {#FolderInstall}; Components: Libs\TinyWireS; BeforeInstall: BackupIFExist
@@ -94,6 +98,7 @@ Name: "Libs\NewPing"; Description: "NewPing"; Types: {#Types}
 Name: "Libs\OneWire"; Description: "OneWire"; Types: {#Types}
 Name: "Libs\PortLib"; Description: "PortLib"; Types: {#Types}
 Name: "Libs\PS2Keyboard"; Description: "PS2Keyboard"; Types: {#Types}
+Name: "Libs\RGBLedLib"; Description: "RGBLedLib"; Types: {#Types}
 Name: "Libs\Time"; Description: "Time"; Types: {#Types}
 Name: "Libs\TinyWireM"; Description: "TinyWireM"; Types: {#Types}
 Name: "Libs\TinyWireS"; Description: "TinyWireS"; Types: {#Types}
