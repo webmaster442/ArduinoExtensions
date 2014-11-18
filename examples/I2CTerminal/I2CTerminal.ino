@@ -4,6 +4,19 @@
 
 #define COMMAND_COUNT 5
 
+#if defined (__AVR_ATmega48__) || defined (__AVR_ATmega48P__) || defined (__AVR_ATmega88__) || defined (__AVR_ATmega88P__) || defined (__AVR_ATmega168__) || defined (__AVR_ATmega168P__) || defined (__AVR_ATmega328P__)
+#define PIN_SDA A4
+#define PIN_SDL A5
+#elif defined (__AVR_ATmega2560__) || defined (__AVR_ATmega1280__)
+#define PIN_SDA 20
+#define PIN_SDL 21
+#elif defined (__AVR_ATmega32U4__)
+#define PIN_SDA 2
+#define PIN_SDL 3
+#else
+#error "Unsupported CPU. I2C Tools only supports: uno, mega and leonardo modells"
+#endif
+
 static const char *commands[] = { 
   "cmd-list", "i2c-scann", "ds1307-read", "ds1307-write", "eeprom-dump" };
 char cmdbuff[15];
@@ -12,15 +25,24 @@ int i;
 
 void setup()
 {
-  Wire.begin();
   Serial.begin(9600);
-  while (!Serial) { 
+  while (!Serial)
+  {
+    //leonardo compatibility
   }
+  Serial.println("Initializing I2C...");
+  Serial.print("SDA pin: ");
+  Serial.print(PIN_SDA);
+  Serial.print(" SDL pin: ");
+  Serial.println(PIN_SDL);
+  Wire.begin();
+  Serial.println("OK!");
+  MenuMain();
 }
 
 void loop()
 {
-  Serial.print("\n\n\n\n\n");
+  Serial.print("\n\n\n\n\n\n");
   Serial.println("For command list type: cmd-list");
   Serial.println("Enter command:");
   int command = ParseCommand();
@@ -41,6 +63,9 @@ void loop()
     break;
   }
 }
+
+
+
 
 
 
