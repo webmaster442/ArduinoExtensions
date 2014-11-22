@@ -99,6 +99,7 @@ __inline__ void AanlogWriteMilivolts(int pin, int milivolts)
 
 int GetVccMiliVolts()
 {
+	#if defined(ARDUINO_ARCH_AVR)
 	const long intscaleConst = 1156.300 * 1000;
 	// Read 1.1V reference against Avcc
 	#if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
@@ -119,6 +120,10 @@ int GetVccMiliVolts()
 	result = scaleConst / result;
 	// Calculate Vcc (in mV); 1125300 = 1.1*1023*1000
 	return(int)result; // Vcc in millivolts
+	#else
+		return 3300;
+	#endif
+	
 }
 
 __inline__ void ShiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, byte val)
@@ -145,7 +150,7 @@ __inline__ void ShiftOut(int8_t dataPin, uint8_t clockPin, uint8_t bitOrder, int
 	}
 }
 
-__inline__ void ShiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, long int int val)
+__inline__ void ShiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, long int val)
 {
 	uint8_t i;
 	for (i = 0; i < 32; i++)  {
