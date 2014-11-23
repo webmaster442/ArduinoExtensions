@@ -121,7 +121,7 @@ int GetVccMiliVolts()
 	// Calculate Vcc (in mV); 1125300 = 1.1*1023*1000
 	return(int)result; // Vcc in millivolts
 	#else
-		return 3300;
+		return -1;
 	#endif
 	
 }
