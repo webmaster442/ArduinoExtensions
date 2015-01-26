@@ -6,7 +6,14 @@ included in the default installation of the arduino software for various reasons
 Getting these software components from the internet is a bit time consuming.
 So I created this installer which automatically installs the following components.
 
-Tools tested with Arduino IDE 1.0.6
+Tools tested with Arduino IDE 1.5.x The IDE can be downloaded from: http://arduino.cc/en/Main/Software
+
+##Included drivers
+	* USB Tiny ISP Driver
+		https://learn.adafruit.com/usbtinyisp
+	
+	* CH340 / CH341 USB Serial adapter used on some Arduino nano clones
+		http://pan.baidu.com/s/1c0pNazm
 
 ##Included hardware support
 
@@ -58,10 +65,10 @@ Tools tested with Arduino IDE 1.0.6
 * USB Host Shield 2.0
 	https://github.com/felis/USB_Host_Shield_2.0
 
+##Libraries by me
+
 * FastDigital Library
 	https://github.com/webmaster442/ArduinoExtensions/wiki/FastDigital-Lib-documentation
-
-##Libraries by me
 
 * PortLib
 	https://github.com/webmaster442/ArduinoExtensions/wiki/PortLib-Documentation
