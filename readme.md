@@ -9,11 +9,11 @@ So I created this installer which automatically installs the following component
 Tools tested with Arduino IDE 1.5.x The IDE can be downloaded from: http://arduino.cc/en/Main/Software
 
 ##Included drivers
-	* USB Tiny ISP Driver
-		https://learn.adafruit.com/usbtinyisp
-	
-	* CH340 / CH341 USB Serial adapter used on some Arduino nano clones
-		http://pan.baidu.com/s/1c0pNazm
+* USB Tiny ISP Driver
+	https://learn.adafruit.com/usbtinyisp
+
+* CH340 / CH341 USB Serial adapter used on some Arduino nano clones
+	http://pan.baidu.com/s/1c0pNazm
 
 ##Included hardware support
 

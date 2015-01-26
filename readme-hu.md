@@ -8,11 +8,11 @@ A csomag az Arduino IDE 1.5 vonalához készül, ebből adódóan nem kompatibil
 
 ##Illesztőprogramok
 
-	* USB Tiny ISP Driver
-		https://learn.adafruit.com/usbtinyisp
-	
-	* CH340 / CH341 USB Serial adapter. Újabb Nano klón lapokon található meg
-		http://pan.baidu.com/s/1c0pNazm
+* USB Tiny ISP Driver
+	https://learn.adafruit.com/usbtinyisp
+
+* CH340 / CH341 USB Serial adapter. Újabb Nano klón lapokon található meg
+	http://pan.baidu.com/s/1c0pNazm
 
 ##Extra Chip támogatás 
 
