@@ -21,7 +21,7 @@ Tools tested with Arduino IDE 1.5.x The IDE can be downloaded from: http://ardui
 	http://arduino.cc/en/Tutorial/ArduinoToBreadboard
  
 * ATTiny44/45/84/85:
-	http://hlt.media.mit.edu/?p=1695
+	highlowtech.org/?p=1695
  
 * ATMega644p & ATMega1284:
 	https://code.google.com/p/sanguino/
@@ -32,7 +32,7 @@ Tools tested with Arduino IDE 1.5.x The IDE can be downloaded from: http://ardui
 	http://playground.arduino.cc/Code/USIi2c
 
 * Debouncing library for Arduino or Wiring
-	https://github.com/thomasfredericks/Bounce-Arduino-Wiring/
+	https://github.com/thomasfredericks/Bounce2
 
 * PS2Keyboard library (Leonardo compatible)
 	https://github.com/yosemitebandit/PS2Keyboard

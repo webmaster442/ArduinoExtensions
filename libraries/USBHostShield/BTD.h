@@ -19,6 +19,7 @@
 #define _btd_h_
 
 #include "Usb.h"
+#include "hid.h"
 
 //PID and VID of the Sony PS3 devices
 #define PS3_VID                 0x054C  // Sony Corporation
@@ -34,9 +35,6 @@
 
 // Used in control endpoint header for HCI Commands
 #define bmREQ_HCI_OUT USB_SETUP_HOST_TO_DEVICE|USB_SETUP_TYPE_CLASS|USB_SETUP_RECIPIENT_DEVICE
-// Used in control endpoint header for HID Commands
-#define bmREQ_HID_OUT USB_SETUP_HOST_TO_DEVICE|USB_SETUP_TYPE_CLASS|USB_SETUP_RECIPIENT_INTERFACE
-#define HID_REQUEST_SET_REPORT      0x09
 
 /* Bluetooth HCI states for hci_task() */
 #define HCI_INIT_STATE                  0
@@ -60,15 +58,15 @@
 #define HCI_DISCONNECT_STATE            16
 
 /* HCI event flags*/
-#define HCI_FLAG_CMD_COMPLETE           0x01
-#define HCI_FLAG_CONNECT_COMPLETE       0x02
-#define HCI_FLAG_DISCONNECT_COMPLETE    0x04
-#define HCI_FLAG_REMOTE_NAME_COMPLETE   0x08
-#define HCI_FLAG_INCOMING_REQUEST       0x10
-#define HCI_FLAG_READ_BDADDR            0x20
-#define HCI_FLAG_READ_VERSION           0x40
-#define HCI_FLAG_DEVICE_FOUND           0x80
-#define HCI_FLAG_CONNECT_EVENT          0x100
+#define HCI_FLAG_CMD_COMPLETE           (1UL << 0)
+#define HCI_FLAG_CONNECT_COMPLETE       (1UL << 1)
+#define HCI_FLAG_DISCONNECT_COMPLETE    (1UL << 2)
+#define HCI_FLAG_REMOTE_NAME_COMPLETE   (1UL << 3)
+#define HCI_FLAG_INCOMING_REQUEST       (1UL << 4)
+#define HCI_FLAG_READ_BDADDR            (1UL << 5)
+#define HCI_FLAG_READ_VERSION           (1UL << 6)
+#define HCI_FLAG_DEVICE_FOUND           (1UL << 7)
+#define HCI_FLAG_CONNECT_EVENT          (1UL << 8)
 
 /* Macros for HCI event flag tests */
 #define hci_check_flag(flag) (hci_event_flag & (flag))
@@ -133,28 +131,28 @@
 #define WII_INIT_MOTION_PLUS_STATE      21
 
 /* L2CAP event flags for HID Control channel */
-#define L2CAP_FLAG_CONNECTION_CONTROL_REQUEST           0x00000001
-#define L2CAP_FLAG_CONFIG_CONTROL_SUCCESS               0x00000002
-#define L2CAP_FLAG_CONTROL_CONNECTED                    0x00000004
-#define L2CAP_FLAG_DISCONNECT_CONTROL_RESPONSE          0x00000008
+#define L2CAP_FLAG_CONNECTION_CONTROL_REQUEST           (1UL << 0)
+#define L2CAP_FLAG_CONFIG_CONTROL_SUCCESS               (1UL << 1)
+#define L2CAP_FLAG_CONTROL_CONNECTED                    (1UL << 2)
+#define L2CAP_FLAG_DISCONNECT_CONTROL_RESPONSE          (1UL << 3)
 
 /* L2CAP event flags for HID Interrupt channel */
-#define L2CAP_FLAG_CONNECTION_INTERRUPT_REQUEST         0x00000010
-#define L2CAP_FLAG_CONFIG_INTERRUPT_SUCCESS             0x00000020
-#define L2CAP_FLAG_INTERRUPT_CONNECTED                  0x00000040
-#define L2CAP_FLAG_DISCONNECT_INTERRUPT_RESPONSE        0x00000080
+#define L2CAP_FLAG_CONNECTION_INTERRUPT_REQUEST         (1UL << 4)
+#define L2CAP_FLAG_CONFIG_INTERRUPT_SUCCESS             (1UL << 5)
+#define L2CAP_FLAG_INTERRUPT_CONNECTED                  (1UL << 6)
+#define L2CAP_FLAG_DISCONNECT_INTERRUPT_RESPONSE        (1UL << 7)
 
 /* L2CAP event flags for SDP channel */
-#define L2CAP_FLAG_CONNECTION_SDP_REQUEST               0x00000100
-#define L2CAP_FLAG_CONFIG_SDP_SUCCESS                   0x00000200
-#define L2CAP_FLAG_DISCONNECT_SDP_REQUEST               0x00000400
+#define L2CAP_FLAG_CONNECTION_SDP_REQUEST               (1UL << 8)
+#define L2CAP_FLAG_CONFIG_SDP_SUCCESS                   (1UL << 9)
+#define L2CAP_FLAG_DISCONNECT_SDP_REQUEST               (1UL << 10)
 
 /* L2CAP event flags for RFCOMM channel */
-#define L2CAP_FLAG_CONNECTION_RFCOMM_REQUEST            0x00000800
-#define L2CAP_FLAG_CONFIG_RFCOMM_SUCCESS                0x00001000
-#define L2CAP_FLAG_DISCONNECT_RFCOMM_REQUEST            0x00002000
+#define L2CAP_FLAG_CONNECTION_RFCOMM_REQUEST            (1UL << 11)
+#define L2CAP_FLAG_CONFIG_RFCOMM_SUCCESS                (1UL << 12)
+#define L2CAP_FLAG_DISCONNECT_RFCOMM_REQUEST            (1UL << 13)
 
-#define L2CAP_FLAG_DISCONNECT_RESPONSE                  0x00004000
+#define L2CAP_FLAG_DISCONNECT_RESPONSE                  (1UL << 14)
 
 /* Macros for L2CAP event flag tests */
 #define l2cap_check_flag(flag) (l2cap_event_flag & (flag))
@@ -191,37 +189,7 @@
 
 #define PAIR    1
 
-/* acl_handle_ok or it's a new connection */
-#if 0
-#define UHS_ACL_HANDLE_OK(x, y) ((uint16_t)(x[0]) | (uint16_t)(x[1] << 8)) == (y | 0x2000U)
-#else
-/*
- *  Better implementation.
- *  o One place for this code, it is reused four times in the source.
- *    Perhaps it is better as a function.
- *  o This should be faster since the && operation can early exit, this means
- *    the shift would only be performed if the first byte matches.
- *  o Casting is eliminated.
- *  o How does this compare in code size? No difference. It is a free optimization.
- */
-#define UHS_ACL_HANDLE_OK(x, y) ((x[0] == (y & 0xff)) && (x[1] == ((y >> 8) | 0x20)))
-#endif
-
-/** All Bluetooth services should inherit this class. */
-class BluetoothService {
-public:
-        /**
-         * Used to pass acldata to the Bluetooth service.
-         * @param ACLData Pointer to the incoming acldata.
-         */
-        virtual void ACLData(uint8_t* ACLData);
-        /** Used to run the different state machines in the Bluetooth service. */
-        virtual void Run();
-        /** Used to reset the Bluetooth service. */
-        virtual void Reset();
-        /** Used to disconnect both the L2CAP Channel and the HCI Connection for the Bluetooth service. */
-        virtual void disconnect();
-};
+class BluetoothService;
 
 /**
  * The Bluetooth Dongle class will take care of all the USB communication
@@ -243,7 +211,7 @@ public:
          * @param  lowspeed Speed of the device.
          * @return          0 on success.
          */
-        virtual uint8_t ConfigureDevice(uint8_t parent, uint8_t port, bool lowspeed);
+        uint8_t ConfigureDevice(uint8_t parent, uint8_t port, bool lowspeed);
         /**
          * Initialize the Bluetooth dongle.
          * @param  parent   Hub number.
@@ -251,17 +219,17 @@ public:
          * @param  lowspeed Speed of the device.
          * @return          0 on success.
          */
-        virtual uint8_t Init(uint8_t parent, uint8_t port, bool lowspeed);
+        uint8_t Init(uint8_t parent, uint8_t port, bool lowspeed);
         /**
          * Release the USB device.
          * @return 0 on success.
          */
-        virtual uint8_t Release();
+        uint8_t Release();
         /**
          * Poll the USB Input endpoints and run the state machines.
          * @return 0 on success.
          */
-        virtual uint8_t Poll();
+        uint8_t Poll();
 
         /**
          * Get the device address.
@@ -284,7 +252,7 @@ public:
          * @param  klass The device's USB class.
          * @return       Returns true if the device's USB class matches this driver.
          */
-        virtual boolean DEVCLASSOK(uint8_t klass) {
+        virtual bool DEVCLASSOK(uint8_t klass) {
                 return (klass == USB_CLASS_WIRELESS_CTRL);
         };
 
@@ -295,7 +263,7 @@ public:
          * @param  pid The device's PID.
          * @return     Returns true if the device's VID and PID matches this driver.
          */
-        virtual boolean VIDPIDOK(uint16_t vid, uint16_t pid) {
+        virtual bool VIDPIDOK(uint16_t vid, uint16_t pid) {
                 if(vid == IOGEAR_GBU521_VID && pid == IOGEAR_GBU521_PID)
                         return true;
                 if(my_bdaddr[0] != 0x00 || my_bdaddr[1] != 0x00 || my_bdaddr[2] != 0x00 || my_bdaddr[3] != 0x00 || my_bdaddr[4] != 0x00 || my_bdaddr[5] != 0x00) { // Check if Bluetooth address is set
@@ -315,29 +283,25 @@ public:
          * @param proto Interface Protocol.
          * @param ep    Endpoint Descriptor.
          */
-        virtual void EndpointXtract(uint8_t conf, uint8_t iface, uint8_t alt, uint8_t proto, const USB_ENDPOINT_DESCRIPTOR *ep);
+        void EndpointXtract(uint8_t conf, uint8_t iface, uint8_t alt, uint8_t proto, const USB_ENDPOINT_DESCRIPTOR *ep);
         /**@}*/
 
         /** Disconnects both the L2CAP Channel and the HCI Connection for all Bluetooth services. */
-        void disconnect() {
-                for(uint8_t i = 0; i < BTD_NUM_SERVICES; i++)
-                        if(btService[i])
-                                btService[i]->disconnect();
-        };
+        void disconnect();
 
         /**
          * Register Bluetooth dongle members/services.
          * @param  pService Pointer to BluetoothService class instance.
          * @return          The service ID on success or -1 on fail.
          */
-        int8_t registerServiceClass(BluetoothService *pService) {
+        int8_t registerBluetoothService(BluetoothService *pService) {
                 for(uint8_t i = 0; i < BTD_NUM_SERVICES; i++) {
                         if(!btService[i]) {
                                 btService[i] = pService;
                                 return i; // Return ID
                         }
                 }
-                return -1; // ErrorregisterServiceClass
+                return -1; // Error registering BluetoothService
         };
 
         /** @name HCI Commands */
@@ -594,4 +558,61 @@ private:
         void setBdaddr(uint8_t* BDADDR);
         void setMoveBdaddr(uint8_t* BDADDR);
 };
+
+/** All Bluetooth services should inherit this class. */
+class BluetoothService {
+public:
+        BluetoothService(BTD *p) : pBtd(p) {
+                if(pBtd)
+                        pBtd->registerBluetoothService(this); // Register it as a Bluetooth service
+        };
+        /**
+         * Used to pass acldata to the Bluetooth service.
+         * @param ACLData Pointer to the incoming acldata.
+         */
+        virtual void ACLData(uint8_t* ACLData) = 0;
+        /** Used to run the different state machines in the Bluetooth service. */
+        virtual void Run() = 0;
+        /** Used to reset the Bluetooth service. */
+        virtual void Reset() = 0;
+        /** Used to disconnect both the L2CAP Channel and the HCI Connection for the Bluetooth service. */
+        virtual void disconnect() = 0;
+
+        /**
+         * Used to call your own function when the device is successfully initialized.
+         * @param funcOnInit Function to call.
+         */
+        void attachOnInit(void (*funcOnInit)(void)) {
+                pFuncOnInit = funcOnInit; // TODO: This really belong in a class of it's own as it is repeated several times
+        };
+
+protected:
+        /**
+         * Called when a device is successfully initialized.
+         * Use attachOnInit(void (*funcOnInit)(void)) to call your own function.
+         * This is useful for instance if you want to set the LEDs in a specific way.
+         */
+        virtual void onInit() = 0;
+
+        /** Used to check if the incoming L2CAP data matches the HCI Handle */
+        bool checkHciHandle(uint8_t *buf, uint16_t handle) {
+                return (buf[0] == (handle & 0xFF)) && (buf[1] == ((handle >> 8) | 0x20));
+        }
+
+        /** Pointer to function called in onInit(). */
+        void (*pFuncOnInit)(void);
+
+        /** Pointer to BTD instance. */
+        BTD *pBtd;
+
+        /** The HCI Handle for the connection. */
+        uint16_t hci_handle;
+
+        /** L2CAP flags of received Bluetooth events. */
+        uint32_t l2cap_event_flag;
+
+        /** Identifier for L2CAP commands. */
+        uint8_t identifier;
+};
+
 #endif

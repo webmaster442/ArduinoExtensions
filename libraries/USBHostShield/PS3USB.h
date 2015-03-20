@@ -19,6 +19,7 @@
 #define _ps3usb_h_
 
 #include "Usb.h"
+#include "hid.h"
 #include "PS3Enums.h"
 
 /* PS3 data taken from descriptors */
@@ -34,13 +35,6 @@
 #define PS3_PID                 0x0268  // PS3 Controller DualShock 3
 #define PS3NAVIGATION_PID       0x042F  // Navigation controller
 #define PS3MOVE_PID             0x03D5  // Motion controller
-
-// Used in control endpoint header for HID Commands
-#define bmREQ_HID_OUT           USB_SETUP_HOST_TO_DEVICE|USB_SETUP_TYPE_CLASS|USB_SETUP_RECIPIENT_INTERFACE
-#define bmREQ_HID_IN            USB_SETUP_DEVICE_TO_HOST|USB_SETUP_TYPE_CLASS|USB_SETUP_RECIPIENT_INTERFACE
-
-#define HID_REQUEST_GET_REPORT  0x01
-#define HID_REQUEST_SET_REPORT  0x09
 
 #define PS3_MAX_ENDPOINTS       3
 
@@ -71,17 +65,17 @@ public:
          * @param  lowspeed Speed of the device.
          * @return          0 on success.
          */
-        virtual uint8_t Init(uint8_t parent, uint8_t port, bool lowspeed);
+        uint8_t Init(uint8_t parent, uint8_t port, bool lowspeed);
         /**
          * Release the USB device.
          * @return 0 on success.
          */
-        virtual uint8_t Release();
+        uint8_t Release();
         /**
          * Poll the USB Input endpoins and run the state machines.
          * @return 0 on success.
          */
-        virtual uint8_t Poll();
+        uint8_t Poll();
 
         /**
          * Get the device address.
@@ -105,7 +99,7 @@ public:
          * @param  pid The device's PID.
          * @return     Returns true if the device's VID and PID matches this driver.
          */
-        virtual boolean VIDPIDOK(uint16_t vid, uint16_t pid) {
+        virtual bool VIDPIDOK(uint16_t vid, uint16_t pid) {
                 return (vid == PS3_VID && (pid == PS3_PID || pid == PS3NAVIGATION_PID || pid == PS3MOVE_PID));
         };
         /**@}*/
