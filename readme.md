@@ -26,7 +26,7 @@ Tools tested with Arduino IDE 1.5.x The IDE can be downloaded from: http://ardui
 * ATMega644p & ATMega1284:
 	https://code.google.com/p/sanguino/
 
-##Libraries by others
+##Hardware support Libs
 
 * TinyWireM & TinyWireS: Wire (I2C / TWI) library for the ATtiny85 (using USI)
 	http://playground.arduino.cc/Code/USIi2c
@@ -41,9 +41,6 @@ Tools tested with Arduino IDE 1.5.x The IDE can be downloaded from: http://ardui
 * DigitalWriteFast - Interrupt safe version with patch to work under arduino 1.0
 	https://code.google.com/p/digitalwritefast/
 
-* Time Library
-	http://www.pjrc.com/teensy/td_libs_Time.html
-
 * DS1307RTC Library
 	http://www.pjrc.com/teensy/td_libs_DS1307RTC.html
 
@@ -56,14 +53,25 @@ Tools tested with Arduino IDE 1.5.x The IDE can be downloaded from: http://ardui
 * Adafruit MCP23017 I2c Port Expander library
 	https://github.com/adafruit/Adafruit-MCP23017-Arduino-Library
 
-* AVR OS
-	https://github.com/chrismoos/avr-os
-
 * OneWire Library
 	http://www.pjrc.com/teensy/td_libs_OneWire.html
 	
 * USB Host Shield 2.0
 	https://github.com/felis/USB_Host_Shield_2.0
+	
+##Software Libs
+
+* Time Library
+	http://www.pjrc.com/teensy/td_libs_Time.html
+	
+* AVR OS
+	https://github.com/chrismoos/avr-os
+
+* AESLib
+	https://github.com/DavyLandman/AESLib
+
+* Cryptosuite
+	https://github.com/Cathedrow/Cryptosuite
 
 ##Libraries by me
 
