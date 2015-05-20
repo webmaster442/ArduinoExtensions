@@ -24,10 +24,10 @@ void setup()
   {
     Serial.println(Ram.Read()); //Read a byte and write it to screen. Each read jumps to the next address
   }
-  
+
   Serial.println("Writing int memory...");
   Ram.Address(0); //Reset the address to 0
-  for (int i=300; i<310; i++)
+  for (int i = 300; i < 310; i++)
   {
     Ram.WriteInt(i);
   }
@@ -37,7 +37,22 @@ void setup()
   {
     Serial.println(Ram.ReadInt()); //Read a byte and write it to screen. Each read jumps to the next address
   }
-  
+
+  Serial.println("Write Lines Test");
+  Ram.Address(0); //Reset the address to 0
+  Ram.Println("This is a line");
+  Ram.Println("This is a longer line");
+  Ram.Println("This is an even longer line :)");
+
+  Serial.println("Read Lines test");
+  Ram.Address(0); //Reset the address to 0
+  char line[80];
+  Ram.Readln(line, 80);
+  Serial.println(line);
+  Ram.Readln(line, 80);
+  Serial.println(line);
+  Ram.Readln(line, 80);
+  Serial.println(line);
 }
 
 void loop()

@@ -1,0 +1,22 @@
+#######################################
+# Syntax Coloring Map For SerialSRam Lib
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+SerialRam	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+SerialRam	KEYWORD2
+Read		KEYWORD2
+ReadInt		KEYWORD2
+Write		KEYWORD2
+WriteInt	KEYWORD2
+Address		KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
