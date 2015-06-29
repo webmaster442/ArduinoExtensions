@@ -135,9 +135,9 @@ __inline__ void MenuDS1307Write()
     val = sscanf(cmdbuff, "%d-%d-%d", &values[0], &values[1], &values[2]);
   }
   while (val != 3);
-  time.Day = values[3];
-  time.Month = values[2];
-  time.Year = values[1];
+  time.Day = values[2];
+  time.Month = values[1];
+  time.Year = values[0];
   if (RTC.write(time)) Serial.println("Configuration OK!");
   else Serial.println("Configuration Error! :(");
 }
