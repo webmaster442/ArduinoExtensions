@@ -24,7 +24,7 @@ Tools tested with Arduino IDE 1.5.x The IDE can be downloaded from: http://ardui
 	highlowtech.org/?p=1695
  
 * ATMega644p & ATMega1284:
-	https://code.google.com/p/sanguino/
+	http://www.leonardomiliani.com/en/2014/atmega644p1284p-nuovo-core-per-lide-1-5-7-di-arduino/
 
 ##Hardware support Libs
 
