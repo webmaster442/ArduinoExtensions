@@ -4,6 +4,7 @@
 #include <adk.h>
 #include <hidboot.h>
 #include <usbhub.h>
+
 // Satisfy IDE, which only needs to see the include statment in the ino.
 #ifdef dobogusinclude
 #include <spi4teensy3.h>
@@ -13,7 +14,7 @@
 USB Usb;
 USBHub Hub1(&Usb);
 USBHub Hub2(&Usb);
-HIDBoot<HID_PROTOCOL_KEYBOARD> Keyboard(&Usb);
+HIDBoot<HID_PROTOCOL_KEYBOARD> HidKeyboard(&Usb);
 
 ADK adk(&Usb,"Circuits@Home, ltd.",
             "USB Host Shield",
@@ -79,7 +80,7 @@ void setup()
     while(1); //halt
   }//if (Usb.Init() == -1...
 
-  Keyboard.SetReportParser(0, (HIDReportParser*)&Prs);
+  HidKeyboard.SetReportParser(0, (HIDReportParser*)&Prs);
 
   delay( 200 );
 }

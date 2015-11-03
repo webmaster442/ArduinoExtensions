@@ -4,7 +4,8 @@
 /* otherwise press any key after getting GPIO error to complete the test */
 /**/
 #include <usbhub.h>
-// Satisfy IDE, which only needs to see the include statment in the ino.
+
+// Satisfy the IDE, which needs to see the include statment in the ino too.
 #ifdef dobogusinclude
 #include <spi4teensy3.h>
 #include <../../../../hardware/pic32/libraries/SPI/SPI.h> // Hack to use the SPI library
@@ -120,7 +121,7 @@ void setup() {
                         }
                         Usb.regWr(rUSBCTL, 0x00); //release from reset
                         uint16_t j = 0;
-                        for(j = 0; j < 65535; j++) { //tracking off to on time
+                        for(j = 1; j < 65535; j++) { //tracking off to on time
                                 if(Usb.regRd(rUSBIRQ) & bmOSCOKIRQ) {
                                         E_Notify(PSTR(" Time to stabilize - "), 0x80);
                                         Serial.print(j, DEC);

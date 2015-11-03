@@ -61,7 +61,7 @@
 #define DIRECT_WRITE_LOW(base, mask)    ((*((base)+2)) &= ~(mask))
 #define DIRECT_WRITE_HIGH(base, mask)   ((*((base)+2)) |= (mask))
 
-#elif defined(__MK20DX128__)
+#elif defined(__MK20DX128__) || defined(__MK20DX256__)
 #define PIN_TO_BASEREG(pin)             (portOutputRegister(pin))
 #define PIN_TO_BITMASK(pin)             (1)
 #define IO_REG_TYPE uint8_t
@@ -71,6 +71,17 @@
 #define DIRECT_MODE_OUTPUT(base, mask)  (*((base)+640) = 1)
 #define DIRECT_WRITE_LOW(base, mask)    (*((base)+256) = 1)
 #define DIRECT_WRITE_HIGH(base, mask)   (*((base)+128) = 1)
+
+#elif defined(__MKL26Z64__)
+#define PIN_TO_BASEREG(pin)             (portOutputRegister(pin))
+#define PIN_TO_BITMASK(pin)             (digitalPinToBitMask(pin))
+#define IO_REG_TYPE uint8_t
+#define IO_REG_ASM
+#define DIRECT_READ(base, mask)         ((*((base)+16) & (mask)) ? 1 : 0)
+#define DIRECT_MODE_INPUT(base, mask)   (*((base)+20) &= ~(mask))
+#define DIRECT_MODE_OUTPUT(base, mask)  (*((base)+20) |= (mask))
+#define DIRECT_WRITE_LOW(base, mask)    (*((base)+8) = (mask))
+#define DIRECT_WRITE_HIGH(base, mask)   (*((base)+4) = (mask))
 
 #elif defined(__SAM3X8E__)
 // Arduino 1.5.1 may have a bug in delayMicroseconds() on Arduino Due.
@@ -105,7 +116,17 @@
 #define DIRECT_WRITE_HIGH(base, mask)   ((*(base+8+2)) = (mask))          //LATXSET + 0x28
 
 #else
-#error "Please define I/O register types here"
+#define PIN_TO_BASEREG(pin)             (0)
+#define PIN_TO_BITMASK(pin)             (pin)
+#define IO_REG_TYPE unsigned int
+#define IO_REG_ASM
+#define DIRECT_READ(base, pin)          digitalRead(pin)
+#define DIRECT_WRITE_LOW(base, pin)     digitalWrite(pin, LOW)
+#define DIRECT_WRITE_HIGH(base, pin)    digitalWrite(pin, HIGH)
+#define DIRECT_MODE_INPUT(base, pin)    pinMode(pin,INPUT)
+#define DIRECT_MODE_OUTPUT(base, pin)   pinMode(pin,OUTPUT)
+#warning "OneWire. Fallback mode. Using API calls for pinMode,digitalRead and digitalWrite. Operation of this library is not guaranteed on this architecture."
+
 #endif
 
 

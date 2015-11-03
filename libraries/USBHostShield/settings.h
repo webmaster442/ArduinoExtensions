@@ -71,6 +71,12 @@ e-mail   :  support@circuitsathome.com
 #define USE_SPI4TEENSY3 1
 #endif
 
+// disabled on the Teensy LC as it is incompatible for now
+#if defined(__MKL26Z64__)
+#undef USE_SPI4TEENSY3
+#define USE_SPI4TEENSY3 0
+#endif
+
 ////////////////////////////////////////////////////////////////////////////////
 // AUTOMATIC Settings
 ////////////////////////////////////////////////////////////////////////////////
@@ -123,16 +129,17 @@ e-mail   :  support@circuitsathome.com
 #define EXT_RAM 0
 #endif
 
-#if defined(CORE_TEENSY) && (defined(__MK20DX128__) || defined(__MK20DX256__))
+#if defined(CORE_TEENSY) && (defined(__MK20DX128__) || defined(__MK20DX256__) || defined(__MKL26Z64__))
 #define USING_SPI4TEENSY3 USE_SPI4TEENSY3
 #else
 #define USING_SPI4TEENSY3 0
 #endif
 
-#if (defined(ARDUINO_SAM_DUE) && defined(__SAM3X8E__)) || defined(RBL_NRF51822)
-#include <SPI.h> // Use the Arduino SPI library for the Arduino Due and RedBearLab nRF51822
+#if ((defined(ARDUINO_SAM_DUE) && defined(__SAM3X8E__)) || defined(RBL_NRF51822) || defined(__ARDUINO_X86__) || ARDUINO >= 10600) && !USING_SPI4TEENSY3
+#include <SPI.h> // Use the Arduino SPI library for the Arduino Due, RedBearLab nRF51822, Intel Galileo 1 & 2, Intel Edison or if the SPI library with transaction is available
 #endif
 #if defined(__PIC32MX__) || defined(__PIC32MZ__)
 #include <../../../../hardware/pic32/libraries/SPI/SPI.h> // Hack to use the SPI library
 #endif
+
 #endif /* SETTINGS_H */

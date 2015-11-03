@@ -92,7 +92,7 @@ uint8_t USB::SetAddress(uint8_t addr, uint8_t ep, EpInfo **ppep, uint16_t *nak_l
                 return USB_ERROR_EP_NOT_FOUND_IN_TBL;
 
         *nak_limit = (0x0001UL << (((*ppep)->bmNakPower > USB_NAK_MAX_POWER) ? USB_NAK_MAX_POWER : (*ppep)->bmNakPower));
-        *nak_limit--;
+        (*nak_limit)--;
         /*
           USBTRACE2("\r\nAddress: ", addr);
           USBTRACE2(" EP: ", ep);
@@ -203,7 +203,7 @@ uint8_t USB::ctrlReq(uint8_t addr, uint8_t ep, uint8_t bmReqType, uint8_t bReque
 
 /* rcode 0 if no errors. rcode 01-0f is relayed from dispatchPkt(). Rcode f0 means RCVDAVIRQ error,
             fe USB xfer timeout */
-uint8_t USB::inTransfer(uint8_t addr, uint8_t ep, uint16_t *nbytesptr, uint8_t* data) {
+uint8_t USB::inTransfer(uint8_t addr, uint8_t ep, uint16_t *nbytesptr, uint8_t* data, uint8_t bInterval /*= 0*/) {
         EpInfo *pep = NULL;
         uint16_t nak_limit = 0;
 
@@ -215,10 +215,10 @@ uint8_t USB::inTransfer(uint8_t addr, uint8_t ep, uint16_t *nbytesptr, uint8_t* 
                 USBTRACE3("(USB::InTransfer) ep requested ", ep, 0x81);
                 return rcode;
         }
-        return InTransfer(pep, nak_limit, nbytesptr, data);
+        return InTransfer(pep, nak_limit, nbytesptr, data, bInterval);
 }
 
-uint8_t USB::InTransfer(EpInfo *pep, uint16_t nak_limit, uint16_t *nbytesptr, uint8_t* data) {
+uint8_t USB::InTransfer(EpInfo *pep, uint16_t nak_limit, uint16_t *nbytesptr, uint8_t* data, uint8_t bInterval /*= 0*/) {
         uint8_t rcode = 0;
         uint8_t pktsize;
 
@@ -234,7 +234,7 @@ uint8_t USB::InTransfer(EpInfo *pep, uint16_t nak_limit, uint16_t *nbytesptr, ui
                 rcode = dispatchPkt(tokIN, pep->epAddr, nak_limit); //IN packet to EP-'endpoint'. Function takes care of NAKS.
                 if(rcode == hrTOGERR) {
                         // yes, we flip it wrong here so that next time it is actually correct!
-                        pep->bmRcvToggle = (regRd(rHRSL) & bmSNDTOGRD) ? 0 : 1;
+                        pep->bmRcvToggle = (regRd(rHRSL) & bmRCVTOGRD) ? 0 : 1;
                         regWr(rHCTL, (pep->bmRcvToggle) ? bmRCVTOG1 : bmRCVTOG0); //set toggle value
                         continue;
                 }
@@ -280,7 +280,8 @@ uint8_t USB::InTransfer(EpInfo *pep, uint16_t nak_limit, uint16_t *nbytesptr, ui
                         //printf("\r\n");
                         rcode = 0;
                         break;
-                } // if
+                } else if(bInterval > 0)
+                        delay(bInterval); // Delay according to polling interval
         } //while( 1 )
         return ( rcode);
 }
