@@ -27,6 +27,7 @@ atmegax4.menu.cpu.1284_1.bootloader.file=optiboot_atmega1284p.hex
 
 atmegax4.menu.cpu.1284_1.build.mcu=atmega1284p
 atmegax4.menu.cpu.1284_1.build.f_cpu=1000000L
+atmegax4.menu.cpu.1284_1.build.variant=megax4
 atmegax4.menu.cpu.1284_1.build.core=megax4
 
 ###########################################################################
@@ -47,6 +48,7 @@ atmegax4.menu.cpu.1284_8.bootloader.file=optiboot_atmega1284p.hex
 
 atmegax4.menu.cpu.1284_8.build.mcu=atmega1284p
 atmegax4.menu.cpu.1284_8.build.f_cpu=8000000L
+atmegax4.menu.cpu.1284_8.build.variant=megax4
 atmegax4.menu.cpu.1284_8.build.core=megax4
 
 ###########################################################################
@@ -67,6 +69,7 @@ atmegax4.menu.cpu.1284_16.bootloader.file=optiboot_atmega1284p.hex
 
 atmegax4.menu.cpu.1284_16.build.mcu=atmega1284p
 atmegax4.menu.cpu.1284_16.build.f_cpu=16000000L
+atmegax4.menu.cpu.1284_16.build.variant=megax4
 atmegax4.menu.cpu.1284_16.build.core=megax4
 
 ###########################################################################
@@ -88,6 +91,7 @@ atmegax4.menu.cpu.1284_16b.bootloader.file=optiboot_atmega1284p.hex
 
 atmegax4.menu.cpu.1284_16b.build.mcu=atmega1284p
 atmegax4.menu.cpu.1284_16b.build.f_cpu=16000000L
+atmegax4.menu.cpu.1284_16b.build.variant=megax4
 atmegax4.menu.cpu.1284_16b.build.core=megax4
 
 ###########################################################################
