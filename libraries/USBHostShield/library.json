@@ -33,15 +33,20 @@
   },
   "examples":
   [
-  	"examples/*/*.ino",
-  	"examples/*/*/*.ino"
+    "examples/*/*.ino",
+    "examples/*/*/*.ino"
   ],
-  "frameworks": "arduino",
+  "frameworks":
+  [
+    "arduino",
+    "spl"
+  ],
   "platforms":
   [
     "atmelavr",
     "teensy",
     "atmelsam",
-    "nordicnrf51"
+    "nordicnrf51",
+    "ststm32"
   ]
 }

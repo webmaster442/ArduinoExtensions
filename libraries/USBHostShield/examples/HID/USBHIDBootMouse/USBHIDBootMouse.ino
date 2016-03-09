@@ -52,7 +52,7 @@ void MouseRptParser::OnMiddleButtonDown	(MOUSEINFO *mi)
 
 USB     Usb;
 USBHub     Hub(&Usb);
-HIDBoot<HID_PROTOCOL_MOUSE>    HidMouse(&Usb);
+HIDBoot<USB_HID_PROTOCOL_MOUSE>    HidMouse(&Usb);
 
 uint32_t next_time;
 
@@ -73,7 +73,7 @@ void setup()
 
     next_time = millis() + 5000;
 
-    HidMouse.SetReportParser(0,(HIDReportParser*)&Prs);
+    HidMouse.SetReportParser(0, &Prs);
 }
 
 void loop()

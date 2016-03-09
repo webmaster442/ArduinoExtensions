@@ -20,16 +20,18 @@ const uint8_t FTDI::epDataInIndex = 1;
 const uint8_t FTDI::epDataOutIndex = 2;
 const uint8_t FTDI::epInterruptInIndex = 3;
 
-FTDI::FTDI(USB *p, FTDIAsyncOper *pasync) :
+FTDI::FTDI(USB *p, FTDIAsyncOper *pasync, uint16_t idProduct) :
 pAsync(pasync),
 pUsb(p),
 bAddress(0),
 bNumEP(1),
-wFTDIType(0) {
+wFTDIType(0),
+wIdProduct(idProduct) {
         for(uint8_t i = 0; i < FTDI_MAX_ENDPOINTS; i++) {
                 epInfo[i].epAddr = 0;
                 epInfo[i].maxPktSize = (i) ? 0 : 8;
-                epInfo[i].epAttribs = 0;
+                epInfo[i].bmSndToggle = 0;
+                epInfo[i].bmRcvToggle = 0;
                 epInfo[i].bmNakPower = (i==epDataInIndex) ? USB_NAK_NOWAIT: USB_NAK_MAX_POWER;
         }
         if(pUsb)
@@ -81,8 +83,16 @@ uint8_t FTDI::Init(uint8_t parent, uint8_t port, bool lowspeed) {
 
         if(rcode)
                 goto FailGetDevDescr;
-        if(udd->idVendor != FTDI_VID || udd->idProduct != FTDI_PID)
+        if(udd->idVendor != FTDI_VID || udd->idProduct != wIdProduct)
+        {
+                USBTRACE("FTDI Init: Product not supported\r\n");
+                USBTRACE2("Expected VID:", FTDI_VID);
+                USBTRACE2("Found VID:", udd->idVendor);
+
+                USBTRACE2("Expected PID:", wIdProduct);
+                USBTRACE2("Found PID:", udd->idProduct);
                 return USB_DEV_CONFIG_ERROR_DEVICE_NOT_SUPPORTED;
+        }
 
         // Save type of FTDI chip
         wFTDIType = udd->bcdDevice;
@@ -227,7 +237,8 @@ void FTDI::EndpointXtract(uint8_t conf, uint8_t iface, uint8_t alt, uint8_t prot
         // Fill in the endpoint info structure
         epInfo[index].epAddr = (pep->bEndpointAddress & 0x0F);
         epInfo[index].maxPktSize = (uint8_t)pep->wMaxPacketSize;
-        epInfo[index].epAttribs = 0;
+        epInfo[index].bmSndToggle = 0;
+        epInfo[index].bmRcvToggle = 0;
 
         bNumEP++;
 
