@@ -5,7 +5,7 @@
  * This sketch uses the ESP8266WiFi library
  */
  
-#include <Time.h> 
+#include <TimeLib.h> 
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 
@@ -27,6 +27,11 @@ const int timeZone = 1;     // Central European Time
 
 WiFiUDP Udp;
 unsigned int localPort = 8888;  // local port to listen for UDP packets
+
+time_t getNtpTime();
+void digitalClockDisplay();
+void printDigits(int digits);
+void sendNTPpacket(IPAddress &address);
 
 void setup() 
 {
