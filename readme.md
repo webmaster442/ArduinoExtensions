@@ -1,12 +1,12 @@
-# Arduino Extensions
+# Arduino/Genuino Extensions
 
 This package contains additional board definitions & libraries that are not
-included in the default installation of the arduino software for various reasons.
+included in the default installation of the Arduino software for various reasons.
 
-Getting these software components from the internet is a bit time consuming.
+Getting these software components from the Internet is a bit time consuming.
 So I created this installer which automatically installs the following components.
 
-Tools tested with Arduino IDE 1.5.x The IDE can be downloaded from: http://arduino.cc/en/Main/Software
+Tools tested with Arduino IDE 1.6.x The IDE can be downloaded from: http://arduino.cc/en/Main/Software
 
 ##Included drivers
 * USB Tiny ISP Driver
@@ -21,10 +21,13 @@ Tools tested with Arduino IDE 1.5.x The IDE can be downloaded from: http://ardui
 	http://arduino.cc/en/Tutorial/ArduinoToBreadboard
  
 * ATTiny44/45/84/85:
-	highlowtech.org/?p=1695
+	http://highlowtech.org/?p=1695
+	
+* ATtiny24/44/84/25/45/85/2313/4313 core:
+	https://github.com/leomil72/tiny
  
 * ATMega644p & ATMega1284:
-	http://www.leonardomiliani.com/en/2014/atmega644p1284p-nuovo-core-per-lide-1-5-7-di-arduino/
+	https://github.com/leomil72/megax4
 
 ##Hardware support Libs
 
@@ -38,7 +41,7 @@ Tools tested with Arduino IDE 1.5.x The IDE can be downloaded from: http://ardui
 	https://github.com/yosemitebandit/PS2Keyboard
 	http://playground.arduino.cc/Main/PS2Keyboard
 
-* DigitalWriteFast - Interrupt safe version with patch to work under arduino 1.0
+* DigitalWriteFast - Interrupt safe version with patch to work under Arduino 1.0
 	https://code.google.com/p/digitalwritefast/
 
 * DS1307RTC Library
@@ -58,7 +61,20 @@ Tools tested with Arduino IDE 1.5.x The IDE can be downloaded from: http://ardui
 	
 * USB Host Shield 2.0
 	https://github.com/felis/USB_Host_Shield_2.0
-	
+
+* Adafruit LiquidCrystal library.
+	https://github.com/adafruit/Adafruit_LiquidCrystal
+	https://learn.adafruit.com/i2c-spi-lcd-backpack/connect-to-i2c
+
+* Adafruit Nokia 5110 library
+	https://github.com/adafruit/Adafruit-PCD8544-Nokia-5110-LCD-library
+
+* Adafruit NeoPixel library
+	https://github.com/adafruit/Adafruit_NeoPixel
+
+* TinySPI
+	https://github.com/leomil72/tinySPI
+
 ##Software Libs
 
 * Time Library
@@ -72,6 +88,9 @@ Tools tested with Arduino IDE 1.5.x The IDE can be downloaded from: http://ardui
 
 * Cryptosuite
 	https://github.com/Cathedrow/Cryptosuite
+
+* pRNG pseudorandom number generator
+	https://github.com/leomil72/pRNG
 
 ##Libraries by me
 
