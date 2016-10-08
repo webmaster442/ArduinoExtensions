@@ -59,6 +59,9 @@ Tools tested with Arduino IDE 1.6.x The IDE can be downloaded from: http://ardui
 * OneWire Library
 	http://www.pjrc.com/teensy/td_libs_OneWire.html
 	
+* Dallas DS18B20/DS1822/DS18S20*/DS1820 Library
+	https://milesburton.com/Dallas_Temperature_Control_Library
+	
 * USB Host Shield 2.0
 	https://github.com/felis/USB_Host_Shield_2.0
 
