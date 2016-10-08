@@ -78,6 +78,10 @@ Tools tested with Arduino IDE 1.6.x The IDE can be downloaded from: http://ardui
 * TinySPI
 	https://github.com/leomil72/tinySPI
 
+* EtherCard - Driver for the ENC28J60
+	https://github.com/jcw/ethercard
+	http://jeelabs.org/pub/docs/ethercard/
+
 ##Software Libs
 
 * Time Library
@@ -97,6 +101,9 @@ Tools tested with Arduino IDE 1.6.x The IDE can be downloaded from: http://ardui
 	
 * Volume Library - 8-bit volume control
 	https://github.com/connornishijima/arduino-volume
+
+* EEPROMEx - Extended EEPROM library
+	https://github.com/thijse/Arduino-EEPROMEx
 
 ##Libraries by me
 
