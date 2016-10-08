@@ -94,6 +94,9 @@ Tools tested with Arduino IDE 1.6.x The IDE can be downloaded from: http://ardui
 
 * pRNG pseudorandom number generator
 	https://github.com/leomil72/pRNG
+	
+* Volume Library - 8-bit volume control
+	https://github.com/connornishijima/arduino-volume
 
 ##Libraries by me
 
