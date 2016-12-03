@@ -25,13 +25,13 @@
 	UTILS
 -------------------------------------------------------------------------------
 */
-__inline__ byte BcdDecode(byte value)
+inline byte BcdDecode(byte value)
 {
 	byte ret = (value & 0xF0) >> 4;
 	return (ret * 10) + (value & 0x0F);
 }
 
-__inline__ byte BcdEncode(byte value)
+inline byte BcdEncode(byte value)
 {
 	if (value > 99) value = 99;
 	if (value < 0) value = 0;
@@ -39,37 +39,37 @@ __inline__ byte BcdEncode(byte value)
 	return target += (value / 10);
 }
 
-__inline__ byte HighByte(int value)
+inline byte HighByte(int value)
 {
 	return ((value & 0xFF00) >> 8);
 }
 
-__inline__ byte LowByte(int value)
+inline byte LowByte(int value)
 {
 	return (value & 0x00FF);
 }
 
-__inline__ byte HighByte(unsigned int value)
+inline byte HighByte(unsigned int value)
 {
 	return ((value & 0xFF00) >> 8);
 }
 
-__inline__ byte LowByte(unsigned int value)
+inline byte LowByte(unsigned int value)
 {
 	return (value & 0x00FF);
 }
 
-__inline__ byte Map(byte x, byte in_min, byte in_max, byte out_min, byte out_max)
+inline byte Map(byte x, byte in_min, byte in_max, byte out_min, byte out_max)
 {
 	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-__inline__ int Map(int x, int in_min, int in_max, int out_min, int out_max)
+inline int Map(int x, int in_min, int in_max, int out_min, int out_max)
 {
 	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-__inline__ long int Map(long int x, long int in_min, long int in_max, long int out_min, long int out_max)
+inline long int Map(long int x, long int in_min, long int in_max, long int out_min, long int out_max)
 {
 	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
@@ -92,7 +92,7 @@ unsigned int UnusedRAM()
 	I/O Functions
 -------------------------------------------------------------------------------
 */
-__inline__ void AanlogWriteMilivolts(int pin, int milivolts)
+inline void AanlogWriteMilivolts(int pin, int milivolts)
 {
 	analogWrite(pin, (255 * milivolts) / 500);
 }
@@ -126,7 +126,7 @@ int GetVccMiliVolts()
 	
 }
 
-__inline__ void ShiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, byte val)
+inline void ShiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, byte val)
 {
 	uint8_t i;
 	for (i = 0; i < 8; i++)
@@ -138,7 +138,7 @@ __inline__ void ShiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, by
 	}
 }
 
-__inline__ void ShiftOut(int8_t dataPin, uint8_t clockPin, uint8_t bitOrder, int val)
+inline void ShiftOut(int8_t dataPin, uint8_t clockPin, uint8_t bitOrder, int val)
 {
 	uint8_t i;
 	for (i = 0; i < 16; i++)
@@ -150,7 +150,7 @@ __inline__ void ShiftOut(int8_t dataPin, uint8_t clockPin, uint8_t bitOrder, int
 	}
 }
 
-__inline__ void ShiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, long int val)
+inline void ShiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, long int val)
 {
 	uint8_t i;
 	for (i = 0; i < 32; i++)  {
@@ -172,5 +172,98 @@ byte SevenSegmentNumber(byte number, byte common)
 	}
 	if (common == CC) return cc[number];
 	else return ca[number];
+}
+
+char * floatToString(char * outstr, float value, int places, int minwidth, bool rightjustify)
+{
+    // this is used to write a float value to string, outstr.  oustr is also the return value.
+    int digit;
+    float tens = 0.1;
+    int tenscount = 0;
+    int i;
+    float tempfloat = value;
+    int c = 0;
+    int charcount = 1;
+    int extra = 0;
+    // make sure we round properly. this could use pow from <math.h>, but doesn't seem worth the import
+    // if this rounding step isn't here, the value  54.321 prints as 54.3209
+
+    // calculate rounding term d:   0.5/pow(10,places)  
+    float d = 0.5;
+    if (value < 0)
+        d *= -1.0;
+    // divide by ten for each decimal place
+    for (i = 0; i < places; i++)
+        d/= 10.0;    
+    // this small addition, combined with truncation will round our values properly 
+    tempfloat +=  d;
+
+    // first get value tens to be the large power of ten less than value    
+    if (value < 0)
+        tempfloat *= -1.0;
+    while ((tens * 10.0) <= tempfloat) {
+        tens *= 10.0;
+        tenscount += 1;
+    }
+
+    if (tenscount > 0)
+        charcount += tenscount;
+    else
+        charcount += 1;
+
+    if (value < 0)
+        charcount += 1;
+    charcount += 1 + places;
+
+    minwidth += 1; // both count the null final character
+    if (minwidth > charcount){        
+        extra = minwidth - charcount;
+        charcount = minwidth;
+    }
+
+    if (extra > 0 and rightjustify) {
+        for (int i = 0; i< extra; i++) {
+            outstr[c++] = ' ';
+        }
+    }
+
+    // write out the negative if needed
+    if (value < 0)
+        outstr[c++] = '-';
+
+    if (tenscount == 0) 
+        outstr[c++] = '0';
+
+    for (i=0; i< tenscount; i++) {
+        digit = (int) (tempfloat/tens);
+        itoa(digit, &outstr[c++], 10);
+        tempfloat = tempfloat - ((float)digit * tens);
+        tens /= 10.0;
+    }
+
+    // if no places after decimal, stop now and return
+
+    // otherwise, write the point and continue on
+    if (places > 0)
+    outstr[c++] = '.';
+
+
+    // now write out each decimal place by shifting digits one by one into the ones place and writing the truncated value
+    for (i = 0; i < places; i++) {
+        tempfloat *= 10.0; 
+        digit = (int) tempfloat;
+        itoa(digit, &outstr[c++], 10);
+        // once written, subtract off that digit
+        tempfloat = tempfloat - (float) digit; 
+    }
+    if (extra > 0 and not rightjustify) {
+        for (int i = 0; i< extra; i++) {
+            outstr[c++] = ' ';
+        }
+    }
+
+
+    outstr[c++] = '\0';
+    return outstr;
 }
 #endif
