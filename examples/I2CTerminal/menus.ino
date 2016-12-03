@@ -10,7 +10,7 @@
 /*-------------------------------------------------------------------------
  Main Menu
  -------------------------------------------------------------------------*/
-__inline__ void MenuMain()
+inline void MenuMain()
 {
   Serial.println("------------------------------------------------------");
   Serial.println("I2C Tools");
@@ -25,7 +25,7 @@ __inline__ void MenuMain()
 /*-------------------------------------------------------------------------
  I2C Adress scanner
  -------------------------------------------------------------------------*/
-__inline__ void MenuScanner()
+inline void MenuScanner()
 {
   byte error, address, found;
   Serial.println("--------------- I2C Adress Scanner ---------------");
@@ -79,7 +79,7 @@ __inline__ void MenuScanner()
 /*-------------------------------------------------------------------------
  DS1307 Reader
  -------------------------------------------------------------------------*/
-__inline__ void MenuDS1307Read()
+inline void MenuDS1307Read()
 {
   tmElements_t time;
   if (RTC.read(time))
@@ -110,7 +110,7 @@ __inline__ void MenuDS1307Read()
 /*-------------------------------------------------------------------------
  DS1307 Writer
  -------------------------------------------------------------------------*/
-__inline__ void MenuDS1307Write()
+inline void MenuDS1307Write()
 {
   byte values[3];
   tmElements_t time;
@@ -145,7 +145,7 @@ __inline__ void MenuDS1307Write()
 /*-------------------------------------------------------------------------
  EEPROM Dump
  -------------------------------------------------------------------------*/
-__inline__ void MenuEepromDump()
+inline void MenuEepromDump()
 {
   Serial.println("--------------- EEPROM Memory dumper ---------------");
   byte devaddress;
@@ -180,7 +180,7 @@ __inline__ void MenuEepromDump()
 /*-------------------------------------------------------------------------
  MCP23017 Reader
  -------------------------------------------------------------------------*/
-__inline__ void MenuMCP23017Read()
+inline void MenuMCP23017Read()
 {
   Serial.println("---------------  MCP23017 Reader ---------------");
   Serial.println("Enter MCP23017 adress: (0->7)");
@@ -198,7 +198,7 @@ __inline__ void MenuMCP23017Read()
 /*-------------------------------------------------------------------------
  MCP23017 Writer
  -------------------------------------------------------------------------*/
-__inline__ void MenuMCP23017Writer()
+inline void MenuMCP23017Writer()
 {
   Serial.println("---------------  MCP23017 Writer ---------------");
   Serial.println("Enter MCP23017 adress: (0->7)");

@@ -3,7 +3,7 @@
  Created by: webmaster442
  https://github.com/webmaster442/ArduinoExtensions
  -------------------------------------------------------------------------*/
-__inline__ void ReadLine()
+inline void ReadLine()
 {
   char last = ' ';
   cmdindex = 0;
@@ -19,7 +19,7 @@ __inline__ void ReadLine()
   while (last != '\n');
 }
 
-__inline__ int ParseCommand()
+inline int ParseCommand()
 {
   ReadLine();
   for (i=0; i<COMMAND_COUNT; i++)
@@ -28,7 +28,7 @@ __inline__ int ParseCommand()
   }
 }
 
-__inline__ void print2digits(int number)
+inline void print2digits(int number)
 {
   if (number >= 0 && number < 10)
   {
