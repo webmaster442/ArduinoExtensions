@@ -12,90 +12,90 @@
 #ifndef Attiny5_h
 #define Attiny5_h
 
-__inline__ void WriteD0(int value)
+inline void WriteD0(int value)
 {
 	if (value) PORTB |= 1 << 0;
 	else PORTB &= ~(1 << 0);
 }
 
-__inline__ int ReadD0()
+inline int ReadD0()
 {
 	return PINB & (1 << 0);
 }
 
-__inline__ void WriteD1(int value)
+inline void WriteD1(int value)
 {
 	if (value) PORTB |= 1 << 1;
 	else PORTB &= ~(1 << 1);
 }
 
-__inline__ int ReadD1()
+inline int ReadD1()
 {
 	return PINB & (1 << 1);
 }
 
-__inline__ void WriteD2(int value)
+inline void WriteD2(int value)
 {
 	if (value) PORTB |= 1 << 2;
 	else PORTB &= ~(1 << 2);
 }
 
-__inline__ int ReadD2()
+inline int ReadD2()
 {
 	return PINB & (1 << 2);
 }
 
-__inline__ void WriteD3(int value)
+inline void WriteD3(int value)
 {
 	if (value) PORTB |= 1 << 3;
 	else PORTB &= ~(1 << 3);
 }
 
-__inline__ int ReadD3()
+inline int ReadD3()
 {
 	return PINB & (1 << 3);
 }
 
-__inline__ void WriteD4(int value)
+inline void WriteD4(int value)
 {
 	if (value) PORTB |= 1 << 4;
 	else PORTB &= ~(1 << 4);
 }
 
-__inline__ int ReadD4()
+inline int ReadD4()
 {
 	return PINB & (1 << 4);
 }
 
-__inline__ void WriteA1(int value)
+inline void WriteA1(int value)
 {
 	if (value) PORTB |= 1 << 2;
 	else PORTB &= ~(1 << 2);
 }
 
-__inline__ int ReadA1()
+inline int ReadA1()
 {
 	return PINB & (1 << 2);
 }
 
-__inline__ void WriteA2(int value)
+inline void WriteA2(int value)
 {
 	if (value) PORTB |= 1 << 4;
 	else PORTB &= ~(1 << 4);
 }
 
-__inline__ int ReadA2()
+inline int ReadA2()
 {
 	return PINB & (1 << 4);
 }
 
-__inline__ void WriteA3(int value)
+inline void WriteA3(int value)
 {
 	if (value) PORTB |= 1 << 3;
 	else PORTB &= ~(1 << 3);
 }
 
-__inline__ int ReadA3()
+inline int ReadA3()
 {
 	return PINB & (1 << 3);
 }

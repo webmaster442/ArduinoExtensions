@@ -26,7 +26,7 @@
 	#define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
 #endif
 
-__inline__ void PWMOff(int pin)
+inline void PWMOff(int pin)
 {
 	uint8_t timer = digitalPinToTimer(pin);
 	switch (timer)
