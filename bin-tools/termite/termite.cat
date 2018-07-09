@@ -809,7 +809,7 @@ pl: Opcjeen
 ru: Íàñòðîéêè
 
 en: Polling
-de: Polling
+de: Abrage
 es: Polling
 fr: Polling
 it: Polling
@@ -818,7 +818,7 @@ pl: Polling
 ru: Polling
 
 en: The interval (in milliseconds) at which the program scans for new input
-de: The interval (in milliseconds) at which the program scans for new input
+de: Das Intervall (in Millisekunden) in dem das Programm nach neuen Daten sucht
 es: The interval (in milliseconds) at which the program scans for new input
 fr: The interval (in milliseconds) at which the program scans for new input
 it: The interval (in milliseconds) at which the program scans for new input
@@ -836,7 +836,7 @@ pl: Keep history
 ru: Keep history
 
 en: If enabled, keeps the most recent commands typed in the transmit edit field (required for auto-completion)
-de: If enabled, keeps the most recent commands typed in the transmit edit field (required for auto-completion)
+de: Wenn aktiv, dann werden die letzten Eingaben des Sendefelds gespeichert (erforderlich für Autovervollständigung)
 es: If enabled, keeps the most recent commands typed in the transmit edit field (required for auto-completion)
 fr: If enabled, keeps the most recent commands typed in the transmit edit field (required for auto-completion)
 it: If enabled, keeps the most recent commands typed in the transmit edit field (required for auto-completion)
