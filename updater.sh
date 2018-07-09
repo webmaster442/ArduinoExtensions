@@ -5,11 +5,14 @@ function docopy
 {
 	git clone --depth 1 $1
 }
-   
-liblist=(
+
+boardlist=(
      'https://github.com/damellis/attiny.git'
      'https://github.com/leomil72/tiny.git'
      'https://github.com/leomil72/megax4'
+   )
+   
+liblist=(
      'https://github.com/thomasfredericks/Bounce2'
      'https://github.com/yosemitebandit/PS2Keyboard'
      'https://github.com/PaulStoffregen/DS1307RTC'
@@ -30,7 +33,34 @@ liblist=(
 	 'https://github.com/thijse/Arduino-EEPROMEx'
    )
 
+driverlist=(
+	 'https://github.com/adafruit/Adafruit_Windows_Drivers'
+   )
+
+mkdir boards
+cd boards
+for item in ${boardlist[*]}
+do
+	docopy $item
+done
+cd .. 
+   
+mkdir libs
+cd libs   
 for item in ${liblist[*]}
 do
 	docopy $item
 done
+cd ..
+
+mkdir driver
+cd driver
+for item in ${driverlist[*]}
+do
+	docopy $item
+done
+cd ..
+
+clear
+echo Done.
+ls -l
