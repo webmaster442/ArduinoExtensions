@@ -79,11 +79,11 @@ class FTDI;
 class FTDIAsyncOper {
 public:
 
-        virtual uint8_t OnInit(FTDI *pftdi) {
+        virtual uint8_t OnInit(FTDI *pftdi __attribute__((unused))) {
                 return 0;
         };
 
-        virtual uint8_t OnRelease(FTDI *pftdi) {
+        virtual uint8_t OnRelease(FTDI *pftdi __attribute__((unused))) {
                 return 0;
         };
 };
@@ -105,7 +105,8 @@ class FTDI : public USBDeviceConfig, public UsbConfigXtracter {
         uint8_t bNumIface; // number of interfaces in the configuration
         uint8_t bNumEP; // total number of EP in the configuration
         uint32_t qNextPollTime; // next poll time
-        bool bPollEnable; // poll enable flag
+        volatile bool bPollEnable; // poll enable flag
+        volatile bool ready; //device ready indicator
         uint16_t wFTDIType; // Type of FTDI chip
         uint16_t wIdProduct; // expected PID
 
@@ -138,8 +139,11 @@ public:
         void EndpointXtract(uint8_t conf, uint8_t iface, uint8_t alt, uint8_t proto, const USB_ENDPOINT_DESCRIPTOR *ep);
 
         virtual bool VIDPIDOK(uint16_t vid, uint16_t pid) {
-                return (vid == FTDI_VID && pid == FTDI_PID);
+                return (vid == FTDI_VID && pid == wIdProduct);
         }
+        virtual bool isReady() {
+                return ready;
+        };
 
 };
 

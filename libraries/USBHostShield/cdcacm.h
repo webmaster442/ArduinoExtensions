@@ -128,7 +128,7 @@ class ACM;
 class CDCAsyncOper {
 public:
 
-        virtual uint8_t OnInit(ACM *pacm) {
+        virtual uint8_t OnInit(ACM *pacm __attribute__((unused))) {
                 return 0;
         };
         //virtual void OnDataRcvd(ACM *pacm, uint8_t nbytes, uint8_t *dataptr) = 0;
@@ -162,10 +162,6 @@ typedef struct {
 
 class ACM : public USBDeviceConfig, public UsbConfigXtracter {
 protected:
-        static const uint8_t epDataInIndex; // DataIn endpoint index
-        static const uint8_t epDataOutIndex; // DataOUT endpoint index
-        static const uint8_t epInterruptInIndex; // InterruptIN  endpoint index
-
         USB *pUsb;
         CDCAsyncOper *pAsync;
         uint8_t bAddress;
@@ -178,11 +174,14 @@ protected:
         volatile bool ready; //device ready indicator
         tty_features _enhanced_status; // current status
 
-        EpInfo epInfo[ACM_MAX_ENDPOINTS];
-
         void PrintEndpointDescriptor(const USB_ENDPOINT_DESCRIPTOR* ep_ptr);
 
 public:
+        static const uint8_t epDataInIndex; // DataIn endpoint index
+        static const uint8_t epDataOutIndex; // DataOUT endpoint index
+        static const uint8_t epInterruptInIndex; // InterruptIN  endpoint index
+        EpInfo epInfo[ACM_MAX_ENDPOINTS];
+
         ACM(USB *pusb, CDCAsyncOper *pasync);
 
         uint8_t SetCommFeature(uint16_t fid, uint8_t nbytes, uint8_t *dataptr);
@@ -230,19 +229,19 @@ public:
                 return rv;
         };
 
-        virtual void autoflowRTS(bool s) {
+        virtual void autoflowRTS(bool s __attribute__((unused))) {
         };
 
-        virtual void autoflowDSR(bool s) {
+        virtual void autoflowDSR(bool s __attribute__((unused))) {
         };
 
-        virtual void autoflowXON(bool s) {
+        virtual void autoflowXON(bool s __attribute__((unused))) {
         };
 
-        virtual void half_duplex(bool s) {
+        virtual void half_duplex(bool s __attribute__((unused))) {
         };
 
-        virtual void wide(bool s) {
+        virtual void wide(bool s __attribute__((unused))) {
         };
 
         // UsbConfigXtracter implementation

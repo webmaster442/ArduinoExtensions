@@ -7,7 +7,7 @@ by Thomas Ouellet Fredericks
 
 with contributions from:
 
-Eric Lowry, Jim Schimpf and Tom Harkaway
+Eric Lowry, Jim Schimpf, Tom Harkaway and Joachim Krüger.
 
 
 HAVE A QUESTION?
@@ -21,6 +21,11 @@ DOWNLOAD
 Download the latest version (version 2) here :
 
 https://github.com/thomasfredericks/Bounce2/archive/master.zip
+
+
+INSTALLATION
+=====================
+Put the "Bounce2" folder in your Arduino or Wiring "libraries" folder. 
 
 
 DOCUMENTATION

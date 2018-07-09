@@ -53,15 +53,17 @@ uint8_t FTDI::Init(uint8_t parent, uint8_t port, bool lowspeed) {
 
         USBTRACE("FTDI Init\r\n");
 
-        if(bAddress)
+        if(bAddress) {
+        USBTRACE("FTDI CLASS IN USE??\r\n");
                 return USB_ERROR_CLASS_INSTANCE_ALREADY_IN_USE;
-
+                }
         // Get pointer to pseudo device with address 0 assigned
         p = addrPool.GetUsbDevicePtr(0);
 
-        if(!p)
+        if(!p) {
+        USBTRACE("FTDI NO ADDRESS??\r\n");
                 return USB_ERROR_ADDRESS_NOT_FOUND_IN_POOL;
-
+                }
         if(!p->epinfo) {
                 USBTRACE("epinfo\r\n");
                 return USB_ERROR_EPINFO_IS_NULL;
@@ -81,8 +83,9 @@ uint8_t FTDI::Init(uint8_t parent, uint8_t port, bool lowspeed) {
         // Restore p->epinfo
         p->epinfo = oldep_ptr;
 
-        if(rcode)
+        if(rcode) {
                 goto FailGetDevDescr;
+        }
         if(udd->idVendor != FTDI_VID || udd->idProduct != wIdProduct)
         {
                 USBTRACE("FTDI Init: Product not supported\r\n");
@@ -139,13 +142,13 @@ uint8_t FTDI::Init(uint8_t parent, uint8_t port, bool lowspeed) {
         USBTRACE2("NC:", num_of_conf);
 
         for(uint8_t i = 0; i < num_of_conf; i++) {
-                HexDumper<USBReadParser, uint16_t, uint16_t> HexDump;
                 ConfigDescParser < 0xFF, 0xFF, 0xFF, CP_MASK_COMPARE_ALL> confDescrParser(this);
 
-                rcode = pUsb->getConfDescr(bAddress, 0, i, &HexDump);
-
-                if(rcode)
-                        goto FailGetConfDescr;
+                // This interferes with serial output, and should be opt-in for debugging.
+                //HexDumper<USBReadParser, uint16_t, uint16_t> HexDump;
+                //rcode = pUsb->getConfDescr(bAddress, 0, i, &HexDump);
+                //if(rcode)
+                //        goto FailGetConfDescr;
 
                 rcode = pUsb->getConfDescr(bAddress, 0, i, &confDescrParser);
 
@@ -179,7 +182,7 @@ uint8_t FTDI::Init(uint8_t parent, uint8_t port, bool lowspeed) {
 
         USBTRACE("FTDI configured\r\n");
 
-        bPollEnable = true;
+        ready = true;
         return 0;
 
 FailGetDevDescr:
@@ -217,7 +220,7 @@ Fail:
         return rcode;
 }
 
-void FTDI::EndpointXtract(uint8_t conf, uint8_t iface, uint8_t alt, uint8_t proto, const USB_ENDPOINT_DESCRIPTOR *pep) {
+void FTDI::EndpointXtract(uint8_t conf, uint8_t iface, uint8_t alt, uint8_t proto __attribute__((unused)), const USB_ENDPOINT_DESCRIPTOR *pep) {
         ErrorMessage<uint8_t > (PSTR("Conf.Val"), conf);
         ErrorMessage<uint8_t > (PSTR("Iface Num"), iface);
         ErrorMessage<uint8_t > (PSTR("Alt.Set"), alt);
@@ -226,10 +229,9 @@ void FTDI::EndpointXtract(uint8_t conf, uint8_t iface, uint8_t alt, uint8_t prot
 
         uint8_t index;
 
-        if((pep->bmAttributes & 0x03) == 3 && (pep->bEndpointAddress & 0x80) == 0x80)
+        if((pep->bmAttributes & bmUSB_TRANSFER_TYPE) == USB_TRANSFER_TYPE_INTERRUPT && (pep->bEndpointAddress & 0x80) == 0x80)
                 index = epInterruptInIndex;
-        else
-                if((pep->bmAttributes & 0x02) == 2)
+        else if((pep->bmAttributes & bmUSB_TRANSFER_TYPE) == USB_TRANSFER_TYPE_BULK)
                 index = ((pep->bEndpointAddress & 0x80) == 0x80) ? epDataInIndex : epDataOutIndex;
         else
                 return;
@@ -252,6 +254,7 @@ uint8_t FTDI::Release() {
         bNumEP = 1;
         qNextPollTime = 0;
         bPollEnable = false;
+        ready = false;
         return pAsync->OnRelease(this);
 }
 
@@ -261,11 +264,11 @@ uint8_t FTDI::Poll() {
         //if (!bPollEnable)
         //      return 0;
 
-        //if (qNextPollTime <= millis())
+        //if (qNextPollTime <= (uint32_t)millis())
         //{
         //      USB_HOST_SERIAL.println(bAddress, HEX);
 
-        //      qNextPollTime = millis() + 100;
+        //      qNextPollTime = (uint32_t)millis() + 100;
         //}
         return rcode;
 }
@@ -273,7 +276,6 @@ uint8_t FTDI::Poll() {
 uint8_t FTDI::SetBaudRate(uint32_t baud) {
         uint16_t baud_value, baud_index = 0;
         uint32_t divisor3;
-
         divisor3 = 48000000 / 2 / baud; // divisor shifted 3 bits to the left
 
         if(wFTDIType == FT232AM) {
@@ -290,8 +292,8 @@ uint8_t FTDI::SetBaudRate(uint32_t baud) {
                         if(divisor3 != 0) baud_value |= 0x8000; // 0.25
                 if(baud_value == 1) baud_value = 0; /* special case for maximum baud rate */
         } else {
-                static const unsigned char divfrac [8] = {0, 3, 2, 0, 1, 1, 2, 3};
-                static const unsigned char divindex[8] = {0, 0, 0, 1, 0, 1, 1, 1};
+                static const uint8_t divfrac [8] = {0, 3, 2, 0, 1, 1, 2, 3};
+                static const uint8_t divindex[8] = {0, 0, 0, 1, 0, 1, 1, 1};
 
                 baud_value = divisor3 >> 3;
                 baud_value |= divfrac [divisor3 & 0x7] << 14;
@@ -304,27 +306,51 @@ uint8_t FTDI::SetBaudRate(uint32_t baud) {
         }
         USBTRACE2("baud_value:", baud_value);
         USBTRACE2("baud_index:", baud_index);
-        return pUsb->ctrlReq(bAddress, 0, bmREQ_FTDI_OUT, FTDI_SIO_SET_BAUD_RATE, baud_value & 0xff, baud_value >> 8, baud_index, 0, 0, NULL, NULL);
+        uint8_t rv = pUsb->ctrlReq(bAddress, 0, bmREQ_FTDI_OUT, FTDI_SIO_SET_BAUD_RATE, baud_value & 0xff, baud_value >> 8, baud_index, 0, 0, NULL, NULL);
+        if(rv && rv != hrNAK) {
+                Release();
+        }
+        return rv;
 }
 
 uint8_t FTDI::SetModemControl(uint16_t signal) {
-        return pUsb->ctrlReq(bAddress, 0, bmREQ_FTDI_OUT, FTDI_SIO_MODEM_CTRL, signal & 0xff, signal >> 8, 0, 0, 0, NULL, NULL);
+        uint8_t rv = pUsb->ctrlReq(bAddress, 0, bmREQ_FTDI_OUT, FTDI_SIO_MODEM_CTRL, signal & 0xff, signal >> 8, 0, 0, 0, NULL, NULL);
+        if(rv && rv != hrNAK) {
+                Release();
+        }
+        return rv;
 }
 
 uint8_t FTDI::SetFlowControl(uint8_t protocol, uint8_t xon, uint8_t xoff) {
-        return pUsb->ctrlReq(bAddress, 0, bmREQ_FTDI_OUT, FTDI_SIO_SET_FLOW_CTRL, xon, xoff, protocol << 8, 0, 0, NULL, NULL);
+        uint8_t rv = pUsb->ctrlReq(bAddress, 0, bmREQ_FTDI_OUT, FTDI_SIO_SET_FLOW_CTRL, xon, xoff, protocol << 8, 0, 0, NULL, NULL);
+        if(rv && rv != hrNAK) {
+                Release();
+        }
+        return rv;
 }
 
 uint8_t FTDI::SetData(uint16_t databm) {
-        return pUsb->ctrlReq(bAddress, 0, bmREQ_FTDI_OUT, FTDI_SIO_SET_DATA, databm & 0xff, databm >> 8, 0, 0, 0, NULL, NULL);
+        uint8_t rv = pUsb->ctrlReq(bAddress, 0, bmREQ_FTDI_OUT, FTDI_SIO_SET_DATA, databm & 0xff, databm >> 8, 0, 0, 0, NULL, NULL);
+        if(rv && rv != hrNAK) {
+                Release();
+        }
+        return rv;
 }
 
 uint8_t FTDI::RcvData(uint16_t *bytes_rcvd, uint8_t *dataptr) {
-        return pUsb->inTransfer(bAddress, epInfo[epDataInIndex].epAddr, bytes_rcvd, dataptr);
+        uint8_t rv = pUsb->inTransfer(bAddress, epInfo[epDataInIndex].epAddr, bytes_rcvd, dataptr);
+        if(rv && rv != hrNAK) {
+                Release();
+        }
+        return rv;
 }
 
 uint8_t FTDI::SndData(uint16_t nbytes, uint8_t *dataptr) {
-        return pUsb->outTransfer(bAddress, epInfo[epDataOutIndex].epAddr, nbytes, dataptr);
+        uint8_t rv = pUsb->outTransfer(bAddress, epInfo[epDataOutIndex].epAddr, nbytes, dataptr);
+        if(rv && rv != hrNAK) {
+                Release();
+        }
+        return rv;
 }
 
 void FTDI::PrintEndpointDescriptor(const USB_ENDPOINT_DESCRIPTOR* ep_ptr) {

@@ -60,25 +60,25 @@ public:
 
 protected:
 
-        virtual void OnMouseMove(MOUSEINFO *mi) {
+        virtual void OnMouseMove(MOUSEINFO *mi __attribute__((unused))) {
         };
 
-        virtual void OnLeftButtonUp(MOUSEINFO *mi) {
+        virtual void OnLeftButtonUp(MOUSEINFO *mi __attribute__((unused))) {
         };
 
-        virtual void OnLeftButtonDown(MOUSEINFO *mi) {
+        virtual void OnLeftButtonDown(MOUSEINFO *mi __attribute__((unused))) {
         };
 
-        virtual void OnRightButtonUp(MOUSEINFO *mi) {
+        virtual void OnRightButtonUp(MOUSEINFO *mi __attribute__((unused))) {
         };
 
-        virtual void OnRightButtonDown(MOUSEINFO *mi) {
+        virtual void OnRightButtonDown(MOUSEINFO *mi __attribute__((unused))) {
         };
 
-        virtual void OnMiddleButtonUp(MOUSEINFO *mi) {
+        virtual void OnMiddleButtonUp(MOUSEINFO *mi __attribute__((unused))) {
         };
 
-        virtual void OnMiddleButtonDown(MOUSEINFO *mi) {
+        virtual void OnMiddleButtonDown(MOUSEINFO *mi __attribute__((unused))) {
         };
 };
 
@@ -171,13 +171,13 @@ protected:
                 return 0;
         };
 
-        virtual void OnControlKeysChanged(uint8_t before, uint8_t after) {
+        virtual void OnControlKeysChanged(uint8_t before __attribute__((unused)), uint8_t after __attribute__((unused))) {
         };
 
-        virtual void OnKeyDown(uint8_t mod, uint8_t key) {
+        virtual void OnKeyDown(uint8_t mod __attribute__((unused)), uint8_t key __attribute__((unused))) {
         };
 
-        virtual void OnKeyUp(uint8_t mod, uint8_t key) {
+        virtual void OnKeyUp(uint8_t mod __attribute__((unused)), uint8_t key __attribute__((unused))) {
         };
 
         virtual const uint8_t *getNumKeys() {
@@ -546,7 +546,7 @@ void HIDBoot<BOOT_PROTOCOL>::EndpointXtract(uint8_t conf, uint8_t iface, uint8_t
         bConfNum = conf;
         bIfaceNum = iface;
 
-        if((pep->bmAttributes & 0x03) == 3 && (pep->bEndpointAddress & 0x80) == 0x80) {
+        if((pep->bmAttributes & bmUSB_TRANSFER_TYPE) == USB_TRANSFER_TYPE_INTERRUPT && (pep->bEndpointAddress & 0x80) == 0x80) {
                 if(pep->bInterval > bInterval) bInterval = pep->bInterval;
 
                 // Fill in the endpoint info structure
@@ -578,7 +578,7 @@ template <const uint8_t BOOT_PROTOCOL>
 uint8_t HIDBoot<BOOT_PROTOCOL>::Poll() {
         uint8_t rcode = 0;
 
-        if(bPollEnable && ((long)(millis() - qNextPollTime) >= 0L)) {
+        if(bPollEnable && ((int32_t)((uint32_t)millis() - qNextPollTime) >= 0L)) {
 
                 // To-do: optimize manually, using the for loop only if needed.
                 for(int i = 0; i < epMUL(BOOT_PROTOCOL); i++) {
@@ -619,7 +619,7 @@ uint8_t HIDBoot<BOOT_PROTOCOL>::Poll() {
                         }
 
                 }
-                qNextPollTime = millis() + bInterval;
+                qNextPollTime = (uint32_t)millis() + bInterval;
         }
         return rcode;
 }

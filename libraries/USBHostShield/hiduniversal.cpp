@@ -315,10 +315,8 @@ void HIDUniversal::EndpointXtract(uint8_t conf, uint8_t iface, uint8_t alt, uint
                 bNumIface++;
         }
 
-        if((pep->bmAttributes & 0x03) == 3 && (pep->bEndpointAddress & 0x80) == 0x80)
-                index = epInterruptInIndex;
-        else
-                index = epInterruptOutIndex;
+        if((pep->bmAttributes & bmUSB_TRANSFER_TYPE) == USB_TRANSFER_TYPE_INTERRUPT)
+                index = (pep->bEndpointAddress & 0x80) == 0x80 ? epInterruptInIndex : epInterruptOutIndex;
 
         if(index) {
                 // Fill in the endpoint info structure
@@ -372,8 +370,8 @@ uint8_t HIDUniversal::Poll() {
         if(!bPollEnable)
                 return 0;
 
-        if((long)(millis() - qNextPollTime) >= 0L) {
-                qNextPollTime = millis() + pollInterval;
+        if((int32_t)((uint32_t)millis() - qNextPollTime) >= 0L) {
+                qNextPollTime = (uint32_t)millis() + pollInterval;
 
                 uint8_t buf[constBuffLen];
 

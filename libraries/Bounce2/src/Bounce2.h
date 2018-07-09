@@ -29,6 +29,12 @@
 #ifndef Bounce2_h
 #define Bounce2_h
 
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "Arduino.h"
+#else
+#include "WProgram.h"
+#endif
+
 // Uncomment the following line for "LOCK-OUT" debounce method
 //#define BOUNCE_LOCK_OUT
 
@@ -37,9 +43,11 @@
 
 #include <inttypes.h>
 
+/*
 #ifndef _BV
 #define _BV(n) (1<<(n))
 #endif
+*/
 
 class Bounce
 {
@@ -83,6 +91,20 @@ class Bounce
     uint16_t interval_millis;
     uint8_t state;
     uint8_t pin;
+    virtual bool readCurrentState() { return digitalRead(pin); }
+    virtual void setPinMode(int pin, int mode) {
+#if defined(ARDUINO_STM_NUCLEO_F103RB) || defined(ARDUINO_GENERIC_STM32F103C)
+        pinMode(pin, (WiringPinMode)mode);
+#else
+        pinMode(pin, mode);
+#endif
+    }
+
+  private:
+    inline void setStateFlag(const uint8_t flag)    {state |= flag;}
+    inline void unsetStateFlag(const uint8_t flag)  {state &= ~flag;}
+    inline void toggleStateFlag(const uint8_t flag) {state ^= flag;}
+    inline bool getStateFlag(const uint8_t flag)    {return((state & flag) != 0);}
 };
 
 #endif

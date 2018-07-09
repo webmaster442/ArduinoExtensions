@@ -232,9 +232,9 @@ uint8_t USBHub::Poll() {
         if(!bPollEnable)
                 return 0;
 
-        if(((long)(millis() - qNextPollTime) >= 0L)) {
+        if(((int32_t)((uint32_t)millis() - qNextPollTime) >= 0L)) {
                 rcode = CheckHubStatus();
-                qNextPollTime = millis() + 100;
+                qNextPollTime = (uint32_t)millis() + 100;
         }
         return rcode;
 }
@@ -375,7 +375,7 @@ uint8_t USBHub::PortStatusChange(uint8_t port, HubEvent &evt) {
         return 0;
 }
 
-void PrintHubPortStatus(USBHub *hubptr, uint8_t addr, uint8_t port, bool print_changes) {
+void PrintHubPortStatus(USBHub *hubptr, uint8_t addr __attribute__((unused)), uint8_t port, bool print_changes) {
         uint8_t rcode = 0;
         HubEvent evt;
 

@@ -1,11 +1,18 @@
 /* Copyright (C) 2011 Circuits At Home, LTD. All rights reserved.
 
-This software may be distributed and modified under the terms of the GNU
-General Public License version 2 (GPL2) as published by the Free Software
-Foundation and appearing in the file GPL2.TXT included in the packaging of
-this file. Please note that GPL2 Section 2[b] requires that all works based
-on this software must also be made publicly available under the terms of
-the GPL2 ("Copyleft").
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 Contact information
 -------------------
@@ -720,6 +727,44 @@ public:
 #define P31 Pa7 /* 31 - PA7 */
 // Balanduino
 
+#elif defined(ARDUINO_AVR_UNO_PRO) && defined(__AVR_ATmega1284P__)
+// UNO*Pro pin numbers
+// Homepage: http://www.hobbytronics.co.uk/arduino-uno-pro
+// Pin Reference: http://www.hobbytronics.co.uk/download/uno_pro/pins_arduino.h
+#define P0  Pd0
+#define P1  Pd1
+#define P2  Pb2
+#define P3  Pb3
+#define P4  Pb0
+#define P5  Pb1
+#define P6  Pd2
+#define P7  Pd3
+#define P8  Pd5
+#define P9  Pd6
+#define P10 Pb4
+#define P11 Pb5
+#define P12 Pb6
+#define P13 Pb7
+#define P14 Pa7
+#define P15 Pa6
+#define P16 Pa5
+#define P17 Pa4
+#define P18 Pa3
+#define P19 Pa2
+#define P20 Pa1
+#define P21 Pa0
+#define P22 Pc0
+#define P23 Pc1
+#define P24 Pc2
+#define P25 Pc3
+#define P26 Pc4
+#define P27 Pc5
+#define P28 Pc6
+#define P29 Pc7
+#define P30 Pd4
+#define P31 Pd7
+// UNO*Pro
+
 #elif defined(__AVR_ATmega644__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__)
 // Sanguino pin numbers
 // Homepage: http://sanguino.cc/hardware
@@ -1325,6 +1370,102 @@ MAKE_PIN(P12, 12); //
 MAKE_PIN(P13, 13); //
 
 #undef MAKE_PIN
+
+#elif defined(ESP8266) || defined(ESP32)
+
+#define MAKE_PIN(className, pin) \
+class className { \
+public: \
+  static void Set() { \
+    digitalWrite(pin, HIGH);\
+  } \
+  static void Clear() { \
+    digitalWrite(pin, LOW); \
+  } \
+  static void SetDirRead() { \
+    pinMode(pin, INPUT); \
+  } \
+  static void SetDirWrite() { \
+    pinMode(pin, OUTPUT); \
+  } \
+  static uint8_t IsSet() { \
+    return digitalRead(pin); \
+  } \
+};
+
+#if defined(ESP8266)
+
+// Pinout for ESP-12 module
+// 0 .. 16 - Digital pins
+// GPIO 6 to 11 and 16 are not usable in this library.
+
+MAKE_PIN(P0, 0);
+MAKE_PIN(P1, 1); // TX0
+MAKE_PIN(P2, 2); // TX1
+MAKE_PIN(P3, 3); // RX0
+MAKE_PIN(P4, 4); // SDA
+MAKE_PIN(P5, 5); // SCL
+MAKE_PIN(P12, 12); // MISO
+MAKE_PIN(P13, 13); // MOSI
+MAKE_PIN(P14, 14); // SCK
+MAKE_PIN(P15, 15); // SS
+
+#elif defined(ESP32)
+
+// Workaround strict-aliasing warnings
+#ifdef pgm_read_word
+#undef pgm_read_word
+#endif
+#ifdef pgm_read_dword
+#undef pgm_read_dword
+#endif
+#ifdef  pgm_read_float
+#undef pgm_read_float
+#endif
+#ifdef  pgm_read_ptr
+#undef pgm_read_ptr
+#endif
+
+#define pgm_read_word(addr) ({ \
+  typeof(addr) _addr = (addr); \
+  *(const unsigned short *)(_addr); \
+})
+#define pgm_read_dword(addr) ({ \
+  typeof(addr) _addr = (addr); \
+  *(const unsigned long *)(_addr); \
+})
+#define pgm_read_float(addr) ({ \
+  typeof(addr) _addr = (addr); \
+  *(const float *)(_addr); \
+})
+#define pgm_read_ptr(addr) ({ \
+  typeof(addr) _addr = (addr); \
+  *(void * const *)(_addr); \
+})
+
+// Pinout for ESP32 dev module
+
+MAKE_PIN(P0, 0);
+MAKE_PIN(P1, 1); // TX0
+MAKE_PIN(P10, 10); // TX1
+MAKE_PIN(P3, 3); // RX0
+MAKE_PIN(P21, 21); // SDA
+MAKE_PIN(P22, 22); // SCL
+MAKE_PIN(P19, 19); // MISO
+MAKE_PIN(P23, 23); // MOSI
+MAKE_PIN(P18, 18); // SCK
+MAKE_PIN(P5, 5); // SS
+MAKE_PIN(P17, 17); // INT
+
+#endif
+
+#undef MAKE_PIN
+
+// pgm_read_ptr is not defined in the ESP32, so we have to undef the diffinition from version_helper.h
+#ifdef pgm_read_pointer
+#undef pgm_read_pointer
+#endif
+#define pgm_read_pointer(p) pgm_read_ptr(p)
 
 #else
 #error "Please define board in avrpins.h"

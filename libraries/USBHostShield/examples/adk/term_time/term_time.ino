@@ -4,8 +4,8 @@
 // Satisfy IDE, which only needs to see the include statment in the ino.
 #ifdef dobogusinclude
 #include <spi4teensy3.h>
-#include <SPI.h>
 #endif
+#include <SPI.h>
 
 USB Usb;
 
@@ -41,7 +41,7 @@ void loop()
     return;
   }
 
-  ultoa( millis() / 1000, (char *)buf, 10 );
+  ultoa((uint32_t)millis() / 1000, (char *)buf, 10 );
 
   rcode = adk.SndData( strlen((char *)buf), buf );
   if (rcode && rcode != hrNAK) {

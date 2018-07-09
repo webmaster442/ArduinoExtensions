@@ -26,24 +26,43 @@
 #include "Usb.h"
 #include "xboxEnums.h"
 
-/* Data Xbox ONE taken from descriptors */
-#define EP_MAXPKTSIZE       32 // max size for data via USB
+/* Xbox One data taken from descriptors */
+#define XBOX_ONE_EP_MAXPKTSIZE                  64 // Max size for data via USB
 
 /* Names we give to the 3 XboxONE pipes */
-#define XBOX_CONTROL_PIPE    0
-#define XBOX_OUTPUT_PIPE     1
-#define XBOX_INPUT_PIPE      2
+#define XBOX_ONE_CONTROL_PIPE                   0
+#define XBOX_ONE_OUTPUT_PIPE                    1
+#define XBOX_ONE_INPUT_PIPE                     2
 
-// PID and VID of the different devices
-#define XBOX_VID                                0x045E // Microsoft Corporation
-#define XBOX_ONE_PID                            0x02D1 // Microsoft One Wired controller
+#define XBOX_ONE_MAX_ENDPOINTS                  3
 
-#define XBOX_REPORT_BUFFER_SIZE 14 // Size of the input report buffer
+// PID and VID of the different versions of the controller - see: https://github.com/torvalds/linux/blob/master/drivers/input/joystick/xpad.c
 
-#define XBOX_MAX_ENDPOINTS   3
+// Official controllers
+#define XBOX_VID1                               0x045E // Microsoft Corporation
+#define XBOX_ONE_PID1                           0x02D1 // Microsoft X-Box One pad
+#define XBOX_ONE_PID2                           0x02DD // Microsoft X-Box One pad (Firmware 2015)
+#define XBOX_ONE_PID3                           0x02E3 // Microsoft X-Box One Elite pad
+#define XBOX_ONE_PID4                           0x02EA // Microsoft X-Box One S pad
+
+// Unofficial controllers
+#define XBOX_VID2                               0x0738 // Mad Catz
+#define XBOX_VID3                               0x0E6F // Afterglow
+#define XBOX_VID4                               0x0F0D // HORIPAD ONE
+#define XBOX_VID5                               0x1532 // Razer
+#define XBOX_VID6                               0x24C6 // PowerA
+
+#define XBOX_ONE_PID5                           0x4A01 // Mad Catz FightStick TE 2 - might have different mapping for triggers?
+#define XBOX_ONE_PID6                           0x0139 // Afterglow Prismatic Wired Controller
+#define XBOX_ONE_PID7                           0x0146 // Rock Candy Wired Controller for Xbox One
+#define XBOX_ONE_PID8                           0x0067 // HORIPAD ONE
+#define XBOX_ONE_PID9                           0x0A03 // Razer Wildcat
+#define XBOX_ONE_PID10                          0x541A // PowerA Xbox One Mini Wired Controller
+#define XBOX_ONE_PID11                          0x542A // Xbox ONE spectra
+#define XBOX_ONE_PID12                          0x543A // PowerA Xbox One wired controller
 
 /** This class implements support for a Xbox ONE controller connected via USB. */
-class XBOXONE : public USBDeviceConfig {
+class XBOXONE : public USBDeviceConfig, public UsbConfigXtracter {
 public:
         /**
          * Constructor for the XBOXONE class.
@@ -88,13 +107,24 @@ public:
         };
 
         /**
+         * Read the poll interval taken from the endpoint descriptors.
+         * @return The poll interval in ms.
+         */
+        uint8_t readPollInterval() {
+                return pollInterval;
+        };
+
+        /**
          * Used by the USB core to check what this driver support.
          * @param  vid The device's VID.
          * @param  pid The device's PID.
          * @return     Returns true if the device's VID and PID matches this driver.
          */
         virtual bool VIDPIDOK(uint16_t vid, uint16_t pid) {
-                return (vid == XBOX_VID && pid == XBOX_ONE_PID);
+                return ((vid == XBOX_VID1 || vid == XBOX_VID2 || vid == XBOX_VID3 || vid == XBOX_VID4 || vid == XBOX_VID5 || vid == XBOX_VID6) &&
+                    (pid == XBOX_ONE_PID1 || pid == XBOX_ONE_PID2 || pid == XBOX_ONE_PID3 || pid == XBOX_ONE_PID4 ||
+                        pid == XBOX_ONE_PID5 || pid == XBOX_ONE_PID6 || pid == XBOX_ONE_PID7 || pid == XBOX_ONE_PID8 ||
+                        pid == XBOX_ONE_PID9 || pid == XBOX_ONE_PID10 || pid == XBOX_ONE_PID11 || pid == XBOX_ONE_PID12));
         };
         /**@}*/
 
@@ -126,6 +156,18 @@ public:
         void attachOnInit(void (*funcOnInit)(void)) {
                 pFuncOnInit = funcOnInit;
         };
+
+        /** Used to set the rumble off. */
+        void setRumbleOff();
+
+        /**
+         * Used to turn on rumble continuously.
+         * @param leftTrigger  Left trigger force.
+         * @param rightTrigger Right trigger force.
+         * @param leftMotor    Left motor force.
+         * @param rightMotor   Right motor force.
+         */
+        void setRumbleOn(uint8_t leftTrigger, uint8_t rightTrigger, uint8_t leftMotor, uint8_t rightMotor);
         /**@}*/
 
         /** True if a Xbox ONE controller is connected. */
@@ -137,7 +179,32 @@ protected:
         /** Device address. */
         uint8_t bAddress;
         /** Endpoint info structure. */
-        EpInfo epInfo[XBOX_MAX_ENDPOINTS];
+        EpInfo epInfo[XBOX_ONE_MAX_ENDPOINTS];
+
+        /** Configuration number. */
+        uint8_t bConfNum;
+        /** Total number of endpoints in the configuration. */
+        uint8_t bNumEP;
+        /** Next poll time based on poll interval taken from the USB descriptor. */
+        uint32_t qNextPollTime;
+
+        /** @name UsbConfigXtracter implementation */
+        /**
+         * UsbConfigXtracter implementation, used to extract endpoint information.
+         * @param conf  Configuration value.
+         * @param iface Interface number.
+         * @param alt   Alternate setting.
+         * @param proto Interface Protocol.
+         * @param ep    Endpoint Descriptor.
+         */
+        void EndpointXtract(uint8_t conf, uint8_t iface, uint8_t alt, uint8_t proto, const USB_ENDPOINT_DESCRIPTOR *ep);
+        /**@}*/
+
+        /**
+         * Used to print the USB Endpoint Descriptor.
+         * @param ep_ptr Pointer to USB Endpoint Descriptor.
+         */
+        void PrintEndpointDescriptor(const USB_ENDPOINT_DESCRIPTOR* ep_ptr);
 
 private:
         /**
@@ -147,6 +214,7 @@ private:
         void onInit();
         void (*pFuncOnInit)(void); // Pointer to function called in onInit()
 
+        uint8_t pollInterval;
         bool bPollEnable;
 
         /* Variables to store the buttons */
@@ -160,11 +228,10 @@ private:
         bool L2Clicked; // These buttons are analog, so we use we use these bools to check if they where clicked or not
         bool R2Clicked;
 
-        uint8_t readBuf[EP_MAXPKTSIZE]; // General purpose buffer for input data
-        uint8_t writeBuf[12]; // General purpose buffer for output data
+        uint8_t readBuf[XBOX_ONE_EP_MAXPKTSIZE]; // General purpose buffer for input data
+        uint8_t cmdCounter;
 
-        void readReport(); // read incoming data
-        void printReport(); // print incoming date - Uncomment for debugging
+        void readReport(); // Used to read the incoming data
 
         /* Private commands */
         uint8_t XboxCommand(uint8_t* data, uint16_t nbytes);

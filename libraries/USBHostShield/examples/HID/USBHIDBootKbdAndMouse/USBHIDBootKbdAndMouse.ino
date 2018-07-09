@@ -4,8 +4,8 @@
 // Satisfy IDE, which only needs to see the include statment in the ino.
 #ifdef dobogusinclude
 #include <spi4teensy3.h>
-#include <SPI.h>
 #endif
+#include <SPI.h>
 
 class MouseRptParser : public MouseReportParser
 {
@@ -145,8 +145,6 @@ HIDBoot < USB_HID_PROTOCOL_KEYBOARD | USB_HID_PROTOCOL_MOUSE > HidComposite(&Usb
 HIDBoot<USB_HID_PROTOCOL_KEYBOARD>    HidKeyboard(&Usb);
 HIDBoot<USB_HID_PROTOCOL_MOUSE>    HidMouse(&Usb);
 
-//uint32_t next_time;
-
 KbdRptParser KbdPrs;
 MouseRptParser MousePrs;
 
@@ -162,8 +160,6 @@ void setup()
     Serial.println("OSC did not start.");
 
   delay( 200 );
-
-  //next_time = millis() + 5000;
 
   HidComposite.SetReportParser(0, &KbdPrs);
   HidComposite.SetReportParser(1, &MousePrs);

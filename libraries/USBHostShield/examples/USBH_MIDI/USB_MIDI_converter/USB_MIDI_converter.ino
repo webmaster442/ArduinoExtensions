@@ -16,8 +16,8 @@
 // Satisfy the IDE, which needs to see the include statment in the ino too.
 #ifdef dobogusinclude
 #include <spi4teensy3.h>
-#include <SPI.h>
 #endif
+#include <SPI.h>
 
 #ifdef USBCON
 #define _MIDI_SERIAL_PORT Serial1
@@ -51,8 +51,7 @@ void loop()
 {
   Usb.Task();
   uint32_t t1 = (uint32_t)micros();
-  if ( Usb.getUsbTaskState() == USB_STATE_RUNNING )
-  {
+  if ( Midi ) {
     MIDI_poll();
   }
   //delay(1ms)
@@ -78,12 +77,7 @@ void doDelay(uint32_t t1, uint32_t t2, uint32_t delayTime)
 {
   uint32_t t3;
 
-  if ( t1 > t2 ) {
-    t3 = (0xFFFFFFFF - t1 + t2);
-  } else {
-    t3 = t2 - t1;
-  }
-
+  t3 = t2 - t1;
   if ( t3 < delayTime ) {
     delayMicroseconds(delayTime - t3);
   }

@@ -1,11 +1,18 @@
 /* Copyright (C) 2011 Circuits At Home, LTD. All rights reserved.
 
-This software may be distributed and modified under the terms of the GNU
-General Public License version 2 (GPL2) as published by the Free Software
-Foundation and appearing in the file GPL2.TXT included in the packaging of
-this file. Please note that GPL2 Section 2[b] requires that all works based
-on this software must also be made publicly available under the terms of
-the GPL2 ("Copyleft").
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 Contact information
 -------------------
@@ -39,6 +46,10 @@ typedef MAX3421e<P53, P54> MAX3421E; // Arduino Mega ADK
 typedef MAX3421e<P20, P19> MAX3421E; // Balanduino
 #elif defined(__ARDUINO_X86__) && PLATFORM_ID == 0x06
 typedef MAX3421e<P3, P2> MAX3421E; // The Intel Galileo supports much faster read and write speed at pin 2 and 3
+#elif defined(ESP8266)
+typedef MAX3421e<P15, P5> MAX3421E; // ESP8266 boards
+#elif defined(ESP32)
+typedef MAX3421e<P5, P17> MAX3421E; // ESP32 boards
 #else
 typedef MAX3421e<P10, P9> MAX3421E; // Official Arduinos (UNO, Duemilanove, Mega, 2560, Leonardo, Due etc.), Intel Edison, Intel Galileo 2 or Teensy 2.0 and 3.x
 #endif
@@ -121,11 +132,11 @@ typedef MAX3421e<P10, P9> MAX3421E; // Official Arduinos (UNO, Duemilanove, Mega
 class USBDeviceConfig {
 public:
 
-        virtual uint8_t Init(uint8_t parent, uint8_t port, bool lowspeed) {
+        virtual uint8_t Init(uint8_t parent __attribute__((unused)), uint8_t port __attribute__((unused)), bool lowspeed __attribute__((unused))) {
                 return 0;
         }
 
-        virtual uint8_t ConfigureDevice(uint8_t parent, uint8_t port, bool lowspeed) {
+        virtual uint8_t ConfigureDevice(uint8_t parent __attribute__((unused)), uint8_t port __attribute__((unused)), bool lowspeed __attribute__((unused))) {
                 return 0;
         }
 
@@ -141,19 +152,19 @@ public:
                 return 0;
         }
 
-        virtual void ResetHubPort(uint8_t port) {
+        virtual void ResetHubPort(uint8_t port __attribute__((unused))) {
                 return;
         } // Note used for hubs only!
 
-        virtual bool VIDPIDOK(uint16_t vid, uint16_t pid) {
+        virtual bool VIDPIDOK(uint16_t vid __attribute__((unused)), uint16_t pid __attribute__((unused))) {
                 return false;
         }
 
-        virtual bool DEVCLASSOK(uint8_t klass) {
+        virtual bool DEVCLASSOK(uint8_t klass __attribute__((unused))) {
                 return false;
         }
 
-        virtual bool DEVSUBCLASSOK(uint8_t subklass) {
+        virtual bool DEVSUBCLASSOK(uint8_t subklass __attribute__((unused))) {
                 return true;
         }
 

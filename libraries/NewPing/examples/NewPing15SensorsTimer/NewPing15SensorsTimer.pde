@@ -1,4 +1,7 @@
 // ---------------------------------------------------------------------------
+// Before attempting to use this sketch, please read the "Help with 15 Sensors Example Sketch":
+// https://bitbucket.org/teckel12/arduino-new-ping/wiki/Help%20with%2015%20Sensors%20Example%20Sketch
+//
 // This example code was used to successfully communicate with 15 ultrasonic sensors. You can adjust
 // the number of sensors in your project by changing SONAR_NUM and the number of NewPing objects in the
 // "sonar" array. You also need to change the pins for each sensor for the NewPing objects. Each sensor

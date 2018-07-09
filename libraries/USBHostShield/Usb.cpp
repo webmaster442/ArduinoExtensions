@@ -1,11 +1,18 @@
 /* Copyright (C) 2011 Circuits At Home, LTD. All rights reserved.
 
-This software may be distributed and modified under the terms of the GNU
-General Public License version 2 (GPL2) as published by the Free Software
-Foundation and appearing in the file GPL2.TXT included in the packaging of
-this file. Please note that GPL2 Section 2[b] requires that all works based
-on this software must also be made publicly available under the terms of
-the GPL2 ("Copyleft").
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 Contact information
 -------------------
@@ -313,7 +320,7 @@ uint8_t USB::OutTransfer(EpInfo *pep, uint16_t nak_limit, uint16_t nbytes, uint8
         if(maxpktsize < 1 || maxpktsize > 64)
                 return USB_ERROR_INVALID_MAX_PKT_SIZE;
 
-        unsigned long timeout = millis() + USB_XFER_TIMEOUT;
+        uint32_t timeout = (uint32_t)millis() + USB_XFER_TIMEOUT;
 
         regWr(rHCTL, (pep->bmSndToggle) ? bmSNDTOG1 : bmSNDTOG0); //set toggle value
 
@@ -328,7 +335,7 @@ uint8_t USB::OutTransfer(EpInfo *pep, uint16_t nak_limit, uint16_t nbytes, uint8
                 regWr(rHIRQ, bmHXFRDNIRQ); //clear IRQ
                 rcode = (regRd(rHRSL) & 0x0f);
 
-                while(rcode && ((long)(millis() - timeout) < 0L)) {
+                while(rcode && ((int32_t)((uint32_t)millis() - timeout) < 0L)) {
                         switch(rcode) {
                                 case hrNAK:
                                         nak_count++;
@@ -375,18 +382,24 @@ breakout:
 
 /* return codes 0x00-0x0f are HRSLT( 0x00 being success ), 0xff means timeout                       */
 uint8_t USB::dispatchPkt(uint8_t token, uint8_t ep, uint16_t nak_limit) {
-        unsigned long timeout = millis() + USB_XFER_TIMEOUT;
+        uint32_t timeout = (uint32_t)millis() + USB_XFER_TIMEOUT;
         uint8_t tmpdata;
         uint8_t rcode = hrSUCCESS;
         uint8_t retry_count = 0;
         uint16_t nak_count = 0;
 
-        while((long)(millis() - timeout) < 0L) {
+        while((int32_t)((uint32_t)millis() - timeout) < 0L) {
+#if defined(ESP8266) || defined(ESP32)
+                        yield(); // needed in order to reset the watchdog timer on the ESP8266
+#endif
                 regWr(rHXFR, (token | ep)); //launch the transfer
                 rcode = USB_ERROR_TRANSFER_TIMEOUT;
 
-                while((long)(millis() - timeout) < 0L) //wait for transfer completion
+                while((int32_t)((uint32_t)millis() - timeout) < 0L) //wait for transfer completion
                 {
+#if defined(ESP8266) || defined(ESP32)
+                        yield(); // needed in order to reset the watchdog timer on the ESP8266
+#endif
                         tmpdata = regRd(rHIRQ);
 
                         if(tmpdata & bmHXFRDNIRQ) {
@@ -426,7 +439,7 @@ void USB::Task(void) //USB state machine
 {
         uint8_t rcode;
         uint8_t tmpdata;
-        static unsigned long delay = 0;
+        static uint32_t delay = 0;
         //USB_DEVICE_DESCRIPTOR buf;
         bool lowspeed = false;
 
@@ -451,7 +464,7 @@ void USB::Task(void) //USB state machine
                         //intentional fallthrough
                 case FSHOST: //attached
                         if((usb_task_state & USB_STATE_MASK) == USB_STATE_DETACHED) {
-                                delay = millis() + USB_SETTLE_DELAY;
+                                delay = (uint32_t)millis() + USB_SETTLE_DELAY;
                                 usb_task_state = USB_ATTACHED_SUBSTATE_SETTLE;
                         }
                         break;
@@ -476,7 +489,7 @@ void USB::Task(void) //USB state machine
                 case USB_DETACHED_SUBSTATE_ILLEGAL: //just sit here
                         break;
                 case USB_ATTACHED_SUBSTATE_SETTLE: //settle time for just attached device
-                        if((long)(millis() - delay) >= 0L)
+                        if((int32_t)((uint32_t)millis() - delay) >= 0L)
                                 usb_task_state = USB_ATTACHED_SUBSTATE_RESET_DEVICE;
                         else break; // don't fall through
                 case USB_ATTACHED_SUBSTATE_RESET_DEVICE:
@@ -488,22 +501,22 @@ void USB::Task(void) //USB state machine
                                 tmpdata = regRd(rMODE) | bmSOFKAENAB; //start SOF generation
                                 regWr(rMODE, tmpdata);
                                 usb_task_state = USB_ATTACHED_SUBSTATE_WAIT_SOF;
-                                //delay = millis() + 20; //20ms wait after reset per USB spec
+                                //delay = (uint32_t)millis() + 20; //20ms wait after reset per USB spec
                         }
                         break;
                 case USB_ATTACHED_SUBSTATE_WAIT_SOF: //todo: change check order
                         if(regRd(rHIRQ) & bmFRAMEIRQ) {
                                 //when first SOF received _and_ 20ms has passed we can continue
                                 /*
-                                if (delay < millis()) //20ms passed
+                                if (delay < (uint32_t)millis()) //20ms passed
                                         usb_task_state = USB_STATE_CONFIGURING;
                                  */
                                 usb_task_state = USB_ATTACHED_SUBSTATE_WAIT_RESET;
-                                delay = millis() + 20;
+                                delay = (uint32_t)millis() + 20;
                         }
                         break;
                 case USB_ATTACHED_SUBSTATE_WAIT_RESET:
-                        if((long)(millis() - delay) >= 0L) usb_task_state = USB_STATE_CONFIGURING;
+                        if((int32_t)((uint32_t)millis() - delay) >= 0L) usb_task_state = USB_STATE_CONFIGURING;
                         else break; // don't fall through
                 case USB_STATE_CONFIGURING:
 
