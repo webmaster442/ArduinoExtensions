@@ -1,0 +1,280 @@
+;************************************************************
+; Adafruit combined USBSER driver for Windows 7 and Vista
+; Windows USB CDC ACM Setup File
+; Copyright (c) 2000 Microsoft Corporation
+
+
+[Version]
+Signature="$Windows NT$"
+Class=Ports
+ClassGuid={4D36E978-E325-11CE-BFC1-08002BE10318}
+Provider=%MFGNAME%
+LayoutFile=layout.inf
+CatalogFile=%MFGFILENAME%.cat
+DriverVer=11/15/2007,5.1.2600.0
+DriverPackageDisplayName=%DESCRIPTION%
+
+[Manufacturer]
+%MFGNAME%=DeviceList, NTamd64
+
+[DestinationDirs]
+DefaultDestDir=12
+
+
+;------------------------------------------------------------------------------
+;  Windows 2000/XP/Vista-32bit Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall.nt]
+include=mdmcpq.inf
+CopyFiles=DriverCopyFiles.nt
+AddReg=DriverInstall.nt.AddReg
+
+[DriverCopyFiles.nt]
+usbser.sys,,,0x20
+
+[DriverInstall.nt.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,%DRIVERFILENAME%.sys
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
+
+[DriverInstall.nt.Services]
+AddService=usbser, 0x00000002, DriverService.nt
+
+[DriverService.nt]
+DisplayName=%SERVICE%
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\%DRIVERFILENAME%.sys
+
+;------------------------------------------------------------------------------
+;  Vista-64bit Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall.NTamd64]
+include=mdmcpq.inf
+CopyFiles=DriverCopyFiles.NTamd64
+AddReg=DriverInstall.NTamd64.AddReg
+
+[DriverCopyFiles.NTamd64]
+%DRIVERFILENAME%.sys,,,0x20
+
+[DriverInstall.NTamd64.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,%DRIVERFILENAME%.sys
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
+
+[DriverInstall.NTamd64.Services]
+AddService=usbser, 0x00000002, DriverService.NTamd64
+
+[DriverService.NTamd64]
+DisplayName=%SERVICE%
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\%DRIVERFILENAME%.sys
+
+
+;------------------------------------------------------------------------------
+;  Vendor and Product ID Definitions
+;------------------------------------------------------------------------------
+; When developing your USB device, the VID and PID used in the PC side
+; application program and the firmware on the microcontroller must match.
+; Modify the below line to use your VID and PID.  Use the format as shown below.
+; Note: One INF file can be used for multiple devices with different VID and PIDs.
+; For each supported device, append ",USB\VID_xxxx&PID_yyyy" to the end of the line.
+;------------------------------------------------------------------------------
+[SourceDisksFiles]
+[SourceDisksNames]
+[DeviceList]
+"%FLORA% Bootloader (0004)"=DriverInstall, USB\VID_239A&PID_0004
+"%FLORA% (8004:00)"=DriverInstall, USB\VID_239A&PID_8004&MI_00
+
+"%CIRCUIT_PLAYGROUND% Bootloader (0011)"=DriverInstall, USB\VID_239A&PID_0011
+"%CIRCUIT_PLAYGROUND% Arduino (8011:00)"=DriverInstall, USB\VID_239A&PID_8011&MI_00
+
+"%CIRCUIT_PLAYGROUND_EXPRESS% Bootloader (0018:00)"=DriverInstall, USB\VID_239A&PID_0018&MI_00
+"%CIRCUIT_PLAYGROUND_EXPRESS% Arduino (8018:00)"=DriverInstall, USB\VID_239A&PID_8018&MI_00
+"%CIRCUIT_PLAYGROUND_EXPRESS% CircuitPython (8019:00)"=DriverInstall, USB\VID_239A&PID_8019&MI_00
+
+"%BLUEFRUIT_MICRO% Bootloader (000A)"=DriverInstall, USB\VID_239A&PID_000A
+"%BLUEFRUIT_MICRO% (800A:00)"=DriverInstall, USB\VID_239A&PID_800A&MI_00
+
+"%FEATHER_32U4% Bootloader (000C)"=DriverInstall, USB\VID_239A&PID_000C
+"%FEATHER_32U4% (800C:00)"=DriverInstall, USB\VID_239A&PID_800C&MI_00
+
+"%FEATHER_M0% Bootloader (0015)"=DriverInstall, USB\VID_239A&PID_0015&MI_00
+"%FEATHER_M0% Bootloader (000B)"=DriverInstall, USB\VID_239A&PID_000B
+;; historical: in CPy board config
+"%FEATHER_M0% (8015:00)"=DriverInstall, USB\VID_239A&PID_8015&MI_00
+"%FEATHER_M0% CircuitPython (800B:00)"=DriverInstall, USB\VID_239A&PID_800B&MI_00
+
+"%FEATHER_M0_EXPRESS% Bootloader (001B:00)"=DriverInstall, USB\VID_239A&PID_001B&MI_00
+"%FEATHER_M0_EXPRESS% (801B:00)"=DriverInstall, USB\VID_239A&PID_801B&MI_00
+"%FEATHER_M0_EXPRESS% CircuitPython (8023:00)"=DriverInstall, USB\VID_239A&PID_8023&MI_00
+
+"%GEMMA_M0% Bootloader (001C:00)"=DriverInstall, USB\VID_239A&PID_001C&MI_00
+"%GEMMA_M0% (801C:00)"=DriverInstall, USB\VID_239A&PID_801C&MI_00
+"%GEMMA_M0% CircuitPython (801D:00)"=DriverInstall, USB\VID_239A&PID_801D&MI_00
+
+"%METRO_M0_EXPRESS% Bootloader (0013:00)"=DriverInstall, USB\VID_239A&PID_0013&MI_00
+"%METRO_M0_EXPRESS% (8013:00)"=DriverInstall, USB\VID_239A&PID_8013&MI_00
+"%METRO_M0_EXPRESS% CircuitPython (8014:00)"=DriverInstall, USB\VID_239A&PID_8014&MI_00
+
+"%TRINKET_M0% Bootloader (001E:00)"=DriverInstall, USB\VID_239A&PID_001E&MI_00
+"%TRINKET_M0% (801E:00)"=DriverInstall, USB\VID_239A&PID_801E&MI_00
+"%TRINKET_M0% CircuitPython (801F:00)"=DriverInstall, USB\VID_239A&PID_801F&MI_00
+
+"%METRO_M4_EXPRESS% Bootloader (0020:00)"=DriverInstall, USB\VID_239A&PID_0020
+"%METRO_M4_EXPRESS% Bootloader (0021:00)"=DriverInstall, USB\VID_239A&PID_0021&MI_00
+"%METRO_M4_EXPRESS% Arduino (8020:00)"=DriverInstall, USB\VID_239A&PID_8020&MI_00
+"%METRO_M4_EXPRESS% CircuitPython (8021:00)"=DriverInstall, USB\VID_239A&PID_8021&MI_00
+
+"%FEATHER_M4_EXPRESS% Bootloader (0022:00)"=DriverInstall, USB\VID_239A&PID_0022&MI_00
+"%FEATHER_M4_EXPRESS% Arduino (8022:00)"=DriverInstall, USB\VID_239A&PID_8022&MI_00
+"%FEATHER_M4_EXPRESS% CircuitPython (8026:00)"=DriverInstall, USB\VID_239A&PID_8026&MI_00
+
+"%FEATHER_M0_RADIOFRUIT% Bootloader (0024:00)"=DriverInstall, USB\VID_239A&PID_0024&MI_00
+"%FEATHER_M0_RADIOFRUIT% Arduino (8024:00)"=DriverInstall, USB\VID_239A&PID_8024&MI_00
+"%FEATHER_M0_RADIOFRUIT% CircuitPython (8025:00)"=DriverInstall, USB\VID_239A&PID_8025&MI_00
+
+"%ITSYBITSY_32U4_3V% Bootloader (000D:00)"=DriverInstall, USB\VID_239A&PID_000D
+"%ITSYBITSY_32U4_3V% (800D:00)"=DriverInstall, USB\VID_239A&PID_800D&MI_00
+
+"%ITSYBITSY_32U4_5V% Bootloader (000E:00)"=DriverInstall, USB\VID_239A&PID_000E
+"%ITSYBITSY_32U4_5V% (800E:00)"=DriverInstall, USB\VID_239A&PID_800E&MI_00
+
+"%ITSYBITSY_M0_EXPRESS% Bootloader (000F:00)"=DriverInstall, USB\VID_239A&PID_000F&MI_00
+"%ITSYBITSY_M0_EXPRESS% (800F:00)"=DriverInstall, USB\VID_239A&PID_800F&MI_00
+"%ITSYBITSY_M0_EXPRESS% CircuitPython (8012:00)"=DriverInstall, USB\VID_239A&PID_8012&MI_00
+
+"%PIRKEY_M0% Bootloader (0027:00)"=DriverInstall, USB\VID_239A&PID_0027&MI_00
+"%PIRKEY_M0% (8027:00)"=DriverInstall, USB\VID_239A&PID_8027&MI_00
+"%PIRKEY_M0% CircuitPython (8028:00)"=DriverInstall, USB\VID_239A&PID_8028&MI_00
+
+"%ITSYBITSY_M4_EXPRESS% Bootloader (002B:00)"=DriverInstall, USB\VID_239A&PID_002B&MI_00
+"%ITSYBITSY_M4_EXPRESS% Arduino (802B:00)"=DriverInstall, USB\VID_239A&PID_802B&MI_00
+"%ITSYBITSY_M4_EXPRESS% CircuitPython (802C:00)"=DriverInstall, USB\VID_239A&PID_802C&MI_00
+
+"%CRICKIT_M0% Bootloader (002D:00)"=DriverInstall, USB\VID_239A&PID_002D&MI_00
+"%CRICKIT_M0% (802D:00)"=DriverInstall, USB\VID_239A&PID_802D&MI_00
+"%CRICKIT_M0% CircuitPython (802E:00)"=DriverInstall, USB\VID_239A&PID_802E&MI_00
+
+"%FEATHER_NRF52840% Bootloader (0029:00)"=DriverInstall, USB\VID_239A&PID_0029&MI_00
+
+"%TEENSY_36% Arduino (16C0/0483)"=DriverInstall, USB\VID_16C0&PID_0483
+
+[DeviceList.NTamd64]
+
+"%FLORA% Bootloader (0004)"=DriverInstall, USB\VID_239A&PID_0004
+"%FLORA% (8004:00)"=DriverInstall, USB\VID_239A&PID_8004&MI_00
+
+"%CIRCUIT_PLAYGROUND% Bootloader (0011)"=DriverInstall, USB\VID_239A&PID_0011
+"%CIRCUIT_PLAYGROUND% Arduino (8011:00)"=DriverInstall, USB\VID_239A&PID_8011&MI_00
+
+"%CIRCUIT_PLAYGROUND_EXPRESS% Bootloader (0018:00)"=DriverInstall, USB\VID_239A&PID_0018&MI_00
+"%CIRCUIT_PLAYGROUND_EXPRESS% Arduino (8018:00)"=DriverInstall, USB\VID_239A&PID_8018&MI_00
+"%CIRCUIT_PLAYGROUND_EXPRESS% CircuitPython (8019:00)"=DriverInstall, USB\VID_239A&PID_8019&MI_00
+
+"%BLUEFRUIT_MICRO% Bootloader (000A)"=DriverInstall, USB\VID_239A&PID_000A
+"%BLUEFRUIT_MICRO% (800A:00)"=DriverInstall, USB\VID_239A&PID_800A&MI_00
+
+"%FEATHER_32U4% Bootloader (000C)"=DriverInstall, USB\VID_239A&PID_000C
+"%FEATHER_32U4% (800C:00)"=DriverInstall, USB\VID_239A&PID_800C&MI_00
+
+"%FEATHER_M0% Bootloader (0015)"=DriverInstall, USB\VID_239A&PID_0015&MI_00
+"%FEATHER_M0% Bootloader (000B)"=DriverInstall, USB\VID_239A&PID_000B
+;; historical: in CPy board config
+"%FEATHER_M0% (8015:00)"=DriverInstall, USB\VID_239A&PID_8015&MI_00
+"%FEATHER_M0% CircuitPython (800B:00)"=DriverInstall, USB\VID_239A&PID_800B&MI_00
+
+"%FEATHER_M0_EXPRESS% Bootloader (001B:00)"=DriverInstall, USB\VID_239A&PID_001B&MI_00
+"%FEATHER_M0_EXPRESS% (801B:00)"=DriverInstall, USB\VID_239A&PID_801B&MI_00
+"%FEATHER_M0_EXPRESS% CircuitPython (8023:00)"=DriverInstall, USB\VID_239A&PID_8023&MI_00
+
+"%GEMMA_M0% Bootloader (001C:00)"=DriverInstall, USB\VID_239A&PID_001C&MI_00
+"%GEMMA_M0% (801C:00)"=DriverInstall, USB\VID_239A&PID_801C&MI_00
+"%GEMMA_M0% CircuitPython (801D:00)"=DriverInstall, USB\VID_239A&PID_801D&MI_00
+
+"%METRO_M0_EXPRESS% Bootloader (0013:00)"=DriverInstall, USB\VID_239A&PID_0013&MI_00
+"%METRO_M0_EXPRESS% (8013:00)"=DriverInstall, USB\VID_239A&PID_8013&MI_00
+"%METRO_M0_EXPRESS% CircuitPython (8014:00)"=DriverInstall, USB\VID_239A&PID_8014&MI_00
+
+"%TRINKET_M0% Bootloader (001E:00)"=DriverInstall, USB\VID_239A&PID_001E&MI_00
+"%TRINKET_M0% (801E:00)"=DriverInstall, USB\VID_239A&PID_801E&MI_00
+"%TRINKET_M0% CircuitPython (801F:00)"=DriverInstall, USB\VID_239A&PID_801F&MI_00
+
+"%METRO_M4_EXPRESS% Bootloader (0020:00)"=DriverInstall, USB\VID_239A&PID_0020
+"%METRO_M4_EXPRESS% Bootloader (0021:00)"=DriverInstall, USB\VID_239A&PID_0021&MI_00
+"%METRO_M4_EXPRESS% Arduino (8020:00)"=DriverInstall, USB\VID_239A&PID_8020&MI_00
+"%METRO_M4_EXPRESS% CircuitPython (8021:00)"=DriverInstall, USB\VID_239A&PID_8021&MI_00
+
+"%FEATHER_M4_EXPRESS% Bootloader (0022:00)"=DriverInstall, USB\VID_239A&PID_0022&MI_00
+"%FEATHER_M4_EXPRESS% Arduino (8022:00)"=DriverInstall, USB\VID_239A&PID_8022&MI_00
+"%FEATHER_M4_EXPRESS% CircuitPython (8026:00)"=DriverInstall, USB\VID_239A&PID_8026&MI_00
+
+"%FEATHER_M0_RADIOFRUIT% Bootloader (0024:00)"=DriverInstall, USB\VID_239A&PID_0024&MI_00
+"%FEATHER_M0_RADIOFRUIT% Arduino (8024:00)"=DriverInstall, USB\VID_239A&PID_8024&MI_00
+"%FEATHER_M0_RADIOFRUIT% CircuitPython (8025:00)"=DriverInstall, USB\VID_239A&PID_8025&MI_00
+
+"%ITSYBITSY_32U4_3V% Bootloader (000D:00)"=DriverInstall, USB\VID_239A&PID_000D
+"%ITSYBITSY_32U4_3V% (800D:00)"=DriverInstall, USB\VID_239A&PID_800D&MI_00
+
+"%ITSYBITSY_32U4_5V% Bootloader (000E:00)"=DriverInstall, USB\VID_239A&PID_000E
+"%ITSYBITSY_32U4_5V% (800E:00)"=DriverInstall, USB\VID_239A&PID_800E&MI_00
+
+"%ITSYBITSY_M0_EXPRESS% Bootloader (000F:00)"=DriverInstall, USB\VID_239A&PID_000F&MI_00
+"%ITSYBITSY_M0_EXPRESS% (800F:00)"=DriverInstall, USB\VID_239A&PID_800F&MI_00
+"%ITSYBITSY_M0_EXPRESS% CircuitPython (8012:00)"=DriverInstall, USB\VID_239A&PID_8012&MI_00
+
+"%PIRKEY_M0% Bootloader (0027:00)"=DriverInstall, USB\VID_239A&PID_0027&MI_00
+"%PIRKEY_M0% (8027:00)"=DriverInstall, USB\VID_239A&PID_8027&MI_00
+"%PIRKEY_M0% CircuitPython (8028:00)"=DriverInstall, USB\VID_239A&PID_8028&MI_00
+
+"%ITSYBITSY_M4_EXPRESS% Bootloader (002B:00)"=DriverInstall, USB\VID_239A&PID_002B&MI_00
+"%ITSYBITSY_M4_EXPRESS% Arduino (802B:00)"=DriverInstall, USB\VID_239A&PID_802B&MI_00
+"%ITSYBITSY_M4_EXPRESS% CircuitPython (802C:00)"=DriverInstall, USB\VID_239A&PID_802C&MI_00
+
+"%CRICKIT_M0% Bootloader (002D:00)"=DriverInstall, USB\VID_239A&PID_002D&MI_00
+"%CRICKIT_M0% (802D:00)"=DriverInstall, USB\VID_239A&PID_802D&MI_00
+"%CRICKIT_M0% CircuitPython (802E:00)"=DriverInstall, USB\VID_239A&PID_802E&MI_00
+
+"%FEATHER_NRF52840% Bootloader (0029:00)"=DriverInstall, USB\VID_239A&PID_0029&MI_00
+
+"%TEENSY_36% Arduino (16C0/0483)"=DriverInstall, USB\VID_16C0&PID_0483
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+;Modify these strings to customize your device
+;------------------------------------------------------------------------------
+[Strings]
+FLORA="Adafruit Flora"
+CIRCUIT_PLAYGROUND="Adafruit Circuit Playground"
+CIRCUIT_PLAYGROUND_EXPRESS="Adafruit Circuit Playground Express"
+BLUEFRUIT_MICRO="Adafruit Bluefruit Micro"
+FEATHER_32U4="Adafruit Feather 32u4"
+FEATHER_M0="Adafruit Feather M0"
+FEATHER_M0_EXPRESS="Adafruit Feather M0 Express"
+GEMMA_M0="Adafruit Gemma M0"
+METRO_M0_EXPRESS="Adafruit Metro M0 Express"
+TRINKET_M0="Adafruit Trinket M0"
+METRO_M4_EXPRESS="Adafruit Metro M4 Express"
+FEATHER_M4_EXPRESS="Adafruit Feather M4 Express"
+FEATHER_M0_RADIOFRUIT="Adafruit Feather RadioFruit"
+ITSYBITSY_32U4_5V="Adafruit ItsyBitsy 32u4 5V"
+ITSYBITSY_32U4_3V="Adafruit ItsyBitsy 32u4 3V"
+ITSYBITSY_M0_EXPRESS="Adafruit ItsyBitsy M0 Express"
+ITSYBITSY_M4_EXPRESS="Adafruit ItsyBitsy M4 Express"
+PIRKEY_M0="Adafruit pIRKey M0"
+TEENSY_36="PJRC Teensy 3.6"
+CRICKIT_M0="Adafruit Crickit M0"
+FEATHER_NRF52840="Feather nRF52840"
+
+MFGFILENAME="Adafruit_usbser"
+DRIVERFILENAME ="usbser"
+MFGNAME="Adafruit Industries LLC"
+INSTDISK="Adafruit Boards CDC Driver Installer"
+DESCRIPTION="Adafruit Boards CDC Driver"
+SERVICE="USB RS-232 Emulation Driver";
